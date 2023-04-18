@@ -2,8 +2,11 @@ import { Box, CircularProgress, Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import CardComponent from "../components/CardComponents";
+import { useNavigate } from "react-router-dom";
+import ROUTES from "../routes/ROUTES";
 const HomePage = () => {
   const [cardsArr, setCardsArr] = useState(null);
+  const navigate = useNavigate();
   useEffect(() => {
     axios
       .get("http://localhost:8181/api/cards/cards")
@@ -18,6 +21,10 @@ const HomePage = () => {
   if (!cardsArr) {
     return <CircularProgress />;
   }
+  const moveToCardPage = (id) => {
+    console.log("id", id);
+    navigate(`/card/${id}`);
+  };
   return (
     <Box>
       <h1>Cards Page</h1>
@@ -27,6 +34,7 @@ const HomePage = () => {
           <Grid item xs={4} key={item._id + Date.now()}>
             {" "}
             <CardComponent
+              onClick={moveToCardPage}
               id={item._id}
               title={item.title}
               subTitle={item.subTitle}

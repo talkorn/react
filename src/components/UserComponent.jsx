@@ -17,10 +17,11 @@ const UserComponent = (userArr) => {
         required={requireds}
         fullWidth
         id={descriptions}
+        type={descriptions}
         label={descriptions}
         name={descriptions}
         autoComplete={descriptions}
-        value={inputStates.descriptions}
+        value={inputStates[descriptions]}
         onChange={onChanges}
       />
 

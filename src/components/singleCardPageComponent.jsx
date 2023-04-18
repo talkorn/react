@@ -12,7 +12,7 @@ import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import PropTypes from "prop-types";
 
-const CardComponent = ({
+const SingleCardPageComponent = ({
   id,
   title,
   subTitle,
@@ -28,18 +28,16 @@ const CardComponent = ({
   houseNumber,
   zipCode,
   bizNumber,
-  onClick,
 }) => {
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ margin: "auto", maxWidth: 550 }}>
       <CardMedia
-        onClick={() => onClick(id)}
         component="img"
-        sx={{ height: 140 }}
+        sx={{ height: 180 }}
         image={img}
         title={title}
       />{" "}
-      <CardContent onClick={() => onClick(id)}>
+      <CardContent>
         <Typography gutterBottom variant="h5" component="div">
           {title}
         </Typography>
@@ -49,11 +47,24 @@ const CardComponent = ({
           {subTitle}
         </Typography>
         <Typography variant="body2" color="text.secondary">
+          {"description:"}
+          {description}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
           {"Phone: "} {phone}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          {"Adress: "}
-          {country} {city} {street}
+          {"web: "} {web}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          {"email: "} {email}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          {`Adress: ${country} ${city} ${street}
+          ${houseNumber}`}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          {"zipCode: "} {zipCode}
         </Typography>
         <Typography variant="body2" color="text.secondary">
           {"CardNumber: "}
@@ -63,9 +74,6 @@ const CardComponent = ({
       <CardActions>
         <Button size="small">
           <DeleteIcon />
-        </Button>
-        <Button variant="text" color="warning">
-          Edit
         </Button>
         <Box
           sx={{ display: "flex", width: "100%", justifyContent: "flex-end" }}
@@ -81,14 +89,13 @@ const CardComponent = ({
     </Card>
   );
 };
-CardComponent.propTypes = {
+SingleCardPageComponent.propTypes = {
   id: PropTypes.string,
   img: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   subTitle: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   onDelete: PropTypes.func,
-  onClick: PropTypes.func,
   onEdit: PropTypes.func,
   canEdit: PropTypes.bool,
   phone: PropTypes.string.isRequired,
@@ -99,13 +106,13 @@ CardComponent.propTypes = {
   street: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
   houseNumber: PropTypes.string.isRequired,
-  zipCode: PropTypes.number,
+  zipCode: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   bizNumber: PropTypes.string,
 };
 
-CardComponent.defaultProps = {
+SingleCardPageComponent.defaultProps = {
   img: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii0xMS41IC0xMC4yMzE3NCAyMyAyMC40NjM0OCI+CiAgPHRpdGxlPlJlYWN0IExvZ288L3RpdGxlPgogIDxjaXJjbGUgY3g9IjAiIGN5PSIwIiByPSIyLjA1IiBmaWxsPSIjNjFkYWZiIi8+CiAgPGcgc3Ryb2tlPSIjNjFkYWZiIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiPgogICAgPGVsbGlwc2Ugcng9IjExIiByeT0iNC4yIi8+CiAgICA8ZWxsaXBzZSByeD0iMTEiIHJ5PSI0LjIiIHRyYW5zZm9ybT0icm90YXRlKDYwKSIvPgogICAgPGVsbGlwc2Ugcng9IjExIiByeT0iNC4yIiB0cmFuc2Zvcm09InJvdGF0ZSgxMjApIi8+CiAgPC9nPgo8L3N2Zz4K",
   subTitle: "",
   canEdit: false,
 };
-export default CardComponent;
+export default SingleCardPageComponent;
