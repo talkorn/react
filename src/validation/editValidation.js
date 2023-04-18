@@ -12,10 +12,15 @@ const editSchema = Joi.object({
   houseNumber: Joi.string().min(1).max(256).required(),
   zipCode: Joi.number().min(1).max(256).allow(""),
   phone: Joi.string().min(9).max(14).required(),
-  email: Joi.string().min(5).max(255).required().email(),
+  createdAt: Joi.string().min(1).max(256).allow(""),
+  email: Joi.string()
+    .min(5)
+    .max(255)
+    .required()
+    .email({ tlds: { allow: false } }),
   web: Joi.string().min(5).max(255).allow(""),
   url: Joi.string().min(6).max(1024).allow(""),
   alt: Joi.string().min(2).max(256).allow(""),
 });
-const editValidationSchema = (userInput) => validation(editSchema, userInput);
-export default editValidationSchema;
+const validateEditSchema = (userInput) => validation(editSchema, userInput);
+export default validateEditSchema;

@@ -1,12 +1,10 @@
 import { useState, useEffect, Fragment } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import Alert from "@mui/material/Alert";
 import EditIcon from "@mui/icons-material/Edit";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
@@ -16,30 +14,16 @@ import validateIdCardParamsSchema from "../validation/idValidation";
 import { CircularProgress } from "@mui/material";
 import atom from "../logo.svg";
 import CssBaseline from "@mui/material/CssBaseline";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import UserComponent from "../components/UserComponent";
 import Stack from "@mui/material/Stack";
+import CardMedia from "@mui/material/CardMedia";
+import validateEditSchema from "../validation/editValidation";
 
 const CardPage = () => {
   const { id } = useParams();
   const [inputsErrorsState, setInputsErrorsState] = useState(null);
-  const [inputState, setInputState] = useState({
-    id: "",
-    title: "",
-    subTitle: "",
-    description: "",
-    phone: "",
-    img: "",
-    web: "",
-    state: "",
-    country: "",
-    city: "",
-    street: "",
-    email: "",
-    houseNumber: "",
-    zipCode: "",
-    bizNumber: "",
-  });
+  const [buttonValid, setButtonValid] = useState(false);
+  const [inputState, setInputState] = useState(null);
   const navigate = useNavigate();
   useEffect(() => {
     (async () => {
@@ -79,8 +63,8 @@ const CardPage = () => {
         delete newInputState.likes;
         delete newInputState._id;
         delete newInputState.user_id;
-        /*  delete newInputState.bizNumber;
-        delete newInputState.createdAt;  */
+        delete newInputState.bizNumber;
+        delete newInputState.createdAt;
         console.log("newInputState", newInputState);
         setInputState(newInputState);
       } catch (err) {
@@ -89,25 +73,43 @@ const CardPage = () => {
     })();
   }, [id]);
   useEffect(() => {
-    /*  const joiResponse = editValidationSchema(inputState);
+    const joiResponse = validateEditSchema(inputState);
     setInputsErrorsState(joiResponse);
-    console.log("inputsErrorsState", inputsErrorsState); */
+    console.log("joiResponse", joiResponse);
     if (
+      inputState &&
       !inputsErrorsState &&
-      inputState.firstName &&
-      inputState.lastName &&
+      inputState.title &&
+      inputState.subTitle &&
       inputState.phone &&
       inputState.country &&
       inputState.email &&
-      inputState.password &&
+      inputState.web &&
       inputState.city &&
       inputState.street &&
       inputState.houseNumber &&
       inputState.zipCode
     ) {
-      /* setButtonValid(true); */
+      setButtonValid(true);
     }
   }, [inputState]);
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      if (inputsErrorsState) {
+        return;
+      }
+      await axios.put("/cards/" + id, inputState);
+    } catch (err) {
+      console.log("error from axios", err.response);
+    }
+    /* navigate(ROUTES.LOGIN); */
+  };
+  const handleInputChange = (ev) => {
+    let newInputState = JSON.parse(JSON.stringify(inputState));
+    newInputState[ev.target.id] = ev.target.value;
+    setInputState(newInputState);
+  };
   if (!inputState) {
     return <CircularProgress />;
   }
@@ -128,150 +130,40 @@ const CardPage = () => {
         <Typography component="h1" variant="h5">
           Edit Page
         </Typography>
-        <Box
-          component="form"
-          noValidate
-          /* onSubmit={handleSubmit} */ sx={{ mt: 3 }}
-        >
+        <CardMedia
+          component="img"
+          sx={{ height: 140 }}
+          image={inputState.url}
+          title={inputState.title}
+        />{" "}
+        <Box component="form" noValidate sx={{ mt: 3 }}>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <UserComponent
-                description="title"
-                inputStates={inputState}
-                /*  onChanges={handleInputChange}
-                inputsErrorsStates={inputsErrorsState} */
-                required={true}
-              />
-            </Grid>
-
-            <Grid item xs={12} sm={6}>
-              <UserComponent
-                description="subtitle"
-                inputStates={inputState}
-                /*  onChanges={handleInputChange}
-                inputsErrorsStates={inputsErrorsState} */
-                required={true}
-              />
-            </Grid>
-
-            <Grid item xs={12} sm={12}>
-              <UserComponent
-                description="description"
-                inputStates={inputState}
-                required={true}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <UserComponent
-                description="phone"
-                inputStates={inputState}
-                /* onChanges={handleInputChange}
-                inputsErrorsStates={inputsErrorsState} */
-                required={true}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <UserComponent
-                description="email"
-                inputStates={inputState}
-                /* onChanges={handleInputChange}
-                inputsErrorsStates={inputsErrorsState} */
-                required={true}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <UserComponent
-                description="web"
-                inputStates={inputState}
-                /*  onChanges={handleInputChange} */
-                /*  inputsErrorsStates={inputsErrorsState} */
-                required={true}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <UserComponent
-                description="imageUrl"
-                inputStates={inputState}
-                /*  onChanges={handleInputChange}
-                inputsErrorsStates={inputsErrorsState} */
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <UserComponent
-                description="imageAlt"
-                inputStates={inputState}
-                /* onChanges={handleInputChange}
-                inputsErrorsStates={inputsErrorsState} */
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <UserComponent
-                description="state"
-                inputStates={inputState}
-                /*  onChanges={handleInputChange}
-                inputsErrorsStates={inputsErrorsState} */
-                required={false}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <UserComponent
-                description="country"
-                inputStates={inputState}
-                /* onChanges={handleInputChange}
-                inputsErrorsStates={inputsErrorsState} */
-                required={true}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <UserComponent
-                description="city"
-                inputStates={inputState}
-                /* onChanges={handleInputChange}
-                inputsErrorsStates={inputsErrorsState} */
-                required={true}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <UserComponent
-                description="street"
-                inputStates={inputState}
-                /* onChanges={handleInputChange}
-                inputsErrorsStates={inputsErrorsState} */
-                required={true}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <UserComponent
-                description="houseNumber"
-                inputStates={inputState}
-                /* onChanges={handleInputChange}
-                inputsErrorsStates={inputsErrorsState} */
-                required={true}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <UserComponent
-                description="zipCode"
-                inputStates={inputState}
-                /*  onChanges={handleInputChange}
-                inputsErrorsStates={inputsErrorsState} */
-                required={false}
-              />
-            </Grid>
-
-            {/*  <Grid item xs={12}>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    value="buisness"
-                    onChange={handleChangecheck}
-                    color="primary"
-                  />
-                }
-                label="SignUp as buisness"
-              />
-            </Grid>
-          </Grid> */}
+            {[
+              { description: "title", required: true },
+              { description: "subTitle", required: true },
+              { description: "description", required: true },
+              { description: "phone", required: true },
+              { description: "email", required: true },
+              { description: "web", required: true },
+              { description: "url", required: false },
+              { description: "alt", required: false },
+              { description: "state", required: false },
+              { description: "country", required: true },
+              { description: "city", required: true },
+              { description: "street", required: true },
+              { description: "houseNumber", required: true },
+              { description: "zipCode", required: false },
+            ].map((props, index) => (
+              <Grid item xs={12} sm={6} key={index}>
+                <UserComponent
+                  description={props.description}
+                  inputStates={inputState}
+                  onChanges={handleInputChange}
+                  inputsErrorsStates={inputsErrorsState}
+                  required={props.required}
+                />
+              </Grid>
+            ))}
             <Stack xs={12} spacing={3} direction="row">
               <Button
                 /*  onClick={cancleButoon} */
@@ -292,8 +184,9 @@ const CardPage = () => {
             </Stack>
 
             <Button
+              onClick={handleSubmit}
               type="submit"
-              /*  disabled={!buttonValid} */
+              disabled={!buttonValid}
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
@@ -307,22 +200,3 @@ const CardPage = () => {
   );
 };
 export default CardPage;
-{
-  /* <SingleCardPageComponent
-          id={inputState._id}
-          title={inputState.title}
-          subTitle={inputState.subTitle}
-          description={inputState.description}
-          phone={inputState.phone}
-          img={inputState.url}
-          web={inputState.web}
-          state={inputState.state}
-          country={inputState.country}
-          city={inputState.city}
-          street={inputState.street}
-          email={inputState.email}
-          houseNumber={inputState.houseNumber}
-          zipCode={inputState.zipCode}
-          bizNumber={inputState.bizNumber}
-        /> */
-}
