@@ -5,6 +5,7 @@ import SignUpPage from "../pages/SignUpPage";
 import LogInPage from "../pages/LogIn";
 import CardPage from "../pages/card";
 import EditPage from "../pages/EditPage";
+import FavoritePage from "../pages/Favorite";
 
 const Router = () => {
   return (
@@ -13,6 +14,7 @@ const Router = () => {
       <Route path={ROUTES.SIGNUP} element={<SignUpPage />} />
       <Route path="/card/:id" element={<CardPage />} />
       <Route path="/edit/:id" element={<EditPage />} />
+      <Route path="/favorite" element={<FavoritePage />} />
       <Route path={ROUTES.LOGIN} element={<LogInPage />} />
     </Routes>
   );

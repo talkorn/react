@@ -28,6 +28,9 @@ const SingleCardPageComponent = ({
   houseNumber,
   zipCode,
   bizNumber,
+  createdAt,
+  onEdit,
+  onDelete,
 }) => {
   return (
     <Card sx={{ margin: "auto", maxWidth: 550 }}>
@@ -67,14 +70,21 @@ const SingleCardPageComponent = ({
           {"zipCode: "} {zipCode}
         </Typography>
         <Typography variant="body2" color="text.secondary">
+          {"createdAte: "} {createdAt}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
           {"CardNumber: "}
           {bizNumber}
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">
+        <Button size="small" onClick={() => onDelete(id)}>
           <DeleteIcon />
         </Button>
+        <Button variant="text" color="warning" onClick={() => onEdit(id)}>
+          Edit
+        </Button>
+
         <Box
           sx={{ display: "flex", width: "100%", justifyContent: "flex-end" }}
         >

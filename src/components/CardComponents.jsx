@@ -8,6 +8,7 @@ import Typography from "@mui/material/Typography";
 import CallIcon from "@mui/icons-material/Call";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import PropTypes from "prop-types";
@@ -29,7 +30,15 @@ const CardComponent = ({
   zipCode,
   bizNumber,
   onClick,
+  onEdit,
+  onDelete,
+  onFavorite,
+  idUser,
+  likes,
 }) => {
+  if (idUser && likes) {
+    console.log(idUser, likes);
+  }
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardMedia
@@ -43,7 +52,6 @@ const CardComponent = ({
         <Typography gutterBottom variant="h5" component="div">
           {title}
         </Typography>
-
         <Divider />
         <Typography variant="body2" color="text.secondary">
           {subTitle}
@@ -53,7 +61,7 @@ const CardComponent = ({
         </Typography>
         <Typography variant="body2" color="text.secondary">
           {"Adress: "}
-          {country} {city} {street}
+          {country} {city} {street} {houseNumber}
         </Typography>
         <Typography variant="body2" color="text.secondary">
           {"CardNumber: "}
@@ -61,17 +69,18 @@ const CardComponent = ({
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">
+        <Button size="small" onClick={() => onDelete(id)}>
           <DeleteIcon />
         </Button>
-        <Button variant="text" color="warning">
+        <Button variant="text" color="warning" onClick={() => onEdit(id)}>
           Edit
         </Button>
         <Box
           sx={{ display: "flex", width: "100%", justifyContent: "flex-end" }}
         >
-          <Button size="small">
-            <FavoriteIcon />
+          <Button size="small" onClick={() => onFavorite(id)}>
+            {likes == idUser && <FavoriteIcon />}
+            {likes != idUser && <FavoriteBorderIcon />}
           </Button>
           <Button size="small">
             <CallIcon />

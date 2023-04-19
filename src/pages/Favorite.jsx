@@ -3,16 +3,20 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import CardComponent from "../components/CardComponents";
 import { useNavigate } from "react-router-dom";
-import ROUTES from "../routes/ROUTES";
 import { useSelector } from "react-redux";
+import ROUTES from "../routes/ROUTES";
 import useLoggedIn from "../hooks/useLoggedIn";
-const HomePage = () => {
+const FavoritePage = () => {
   const [cardsArr, setCardsArr] = useState(null);
-  const navigate = useNavigate();
+  const [likesChanged, setLikesChanged] = useState(null);
   const LoggedIn = useLoggedIn();
+  const navigate = useNavigate();
+  const isLoggedIn = useSelector((thestore) => thestore.authSlice);
   const payload = useSelector((store) => store.authSlice.payload);
+
   useEffect(() => {
     LoggedIn();
+
     axios
       .get("http://localhost:8181/api/cards/cards")
       .then(({ data }) => {
@@ -22,11 +26,18 @@ const HomePage = () => {
       .catch((err) => {
         console.log("err from axios", err);
       });
-  }, []);
+  }, [likesChanged]);
   if (!payload) {
     return;
   }
   const idUser = payload._id;
+  console.log("payload ", payload);
+  console.log("idUser  ", idUser);
+  console.log("isLoggedIn", isLoggedIn);
+
+  if (!idUser) {
+    return;
+  }
   if (!cardsArr) {
     return <CircularProgress />;
   }
@@ -38,11 +49,15 @@ const HomePage = () => {
     console.log("id", id);
     navigate(`/edit/${id}`);
   };
-  /* const addToFavorite = (id) => {
+  /*  const addToFavorite = (id) => {
     axios.patch("/cards/card-like/" + id);
+    axios.get("http://localhost:8181/api/cards/cards").then(({ data }) => {
+      console.log("data", data);
+      setCardsArr(data);
+    });
+ 
     console.log("here");
-  };
-   */
+  }; */
   const addToFavorite = async (id) => {
     await axios.patch(`/cards/card-like/${id}`);
 
@@ -56,46 +71,55 @@ const HomePage = () => {
   const deleteCardFromInitialCardsArr = async (id) => {
     try {
       console.log("id", id);
-      setCardsArr((cardsArr) => cardsArr.filter((item) => item._id != id));
+      setCardsArr((cardsArr) => cardsArr.filter((item) => item.likes == id));
       console.log("cardsArr", cardsArr);
       await axios.delete("cards/" + id);
     } catch (err) {
       console.log("error when deleting", err.response.data);
     }
   };
+
   return (
     <Box>
-      <h1>Cards Page</h1>
-      <h2>Here You Can Find All Our Buisness Cards</h2>
+      <h1>Favorite</h1>
+      {/*   {!cardsArr && <h2>you dont have any favorite cards</h2>}
+
+      {cardsArr && <h2>Here You Can See All Your Favorite Cards</h2>}
+ */}
+      {/*  {(!cardsArr || cardsArr.length === 0) && (
+        <h2>you don't have any favorite cards</h2>
+      )} */}
       <Grid container spacing={2}>
-        {cardsArr.map((item) => (
-          <Grid item xs={4} key={item._id + Date.now()}>
-            {" "}
-            <CardComponent
-              likes={item.likes}
-              idUser={idUser}
-              onClick={moveToCardPage}
-              id={item._id}
-              title={item.title}
-              subTitle={item.subTitle}
-              description={item.description}
-              phone={item.phone}
-              img={item.image.url}
-              web={item.web}
-              state={item.state}
-              country={item.country}
-              city={item.city}
-              street={item.street}
-              email={item.email}
-              houseNumber={item.houseNumber}
-              zipCode={item.zipCode}
-              bizNumber={item.bizNumber}
-              onEdit={moveToEditPage}
-              onDelete={deleteCardFromInitialCardsArr}
-              onFavorite={addToFavorite}
-            />
-          </Grid>
-        ))}
+        {cardsArr &&
+          cardsArr
+            .filter((item) => item.likes == idUser && idUser)
+            .map((item) => (
+              <Grid item xs={4} key={item._id + Date.now()}>
+                <CardComponent
+                  likes={item.likes}
+                  idUser={idUser}
+                  onClick={moveToCardPage}
+                  id={item._id}
+                  title={item.title}
+                  subTitle={item.subTitle}
+                  description={item.description}
+                  phone={item.phone}
+                  img={item.image.url}
+                  web={item.web}
+                  state={item.state}
+                  country={item.country}
+                  city={item.city}
+                  street={item.street}
+                  email={item.email}
+                  houseNumber={item.houseNumber}
+                  zipCode={item.zipCode}
+                  bizNumber={item.bizNumber}
+                  onEdit={moveToEditPage}
+                  onDelete={deleteCardFromInitialCardsArr}
+                  onFavorite={addToFavorite}
+                />
+              </Grid>
+            ))}
       </Grid>
     </Box>
   );
@@ -105,4 +129,4 @@ CardComponent.defaultProps = {
   subTitle: "",
   canEdit: false,
 };
-export default HomePage;
+export default FavoritePage;

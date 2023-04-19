@@ -18,12 +18,14 @@ import UserComponent from "../components/UserComponent";
 import Stack from "@mui/material/Stack";
 import CardMedia from "@mui/material/CardMedia";
 import validateEditSchema from "../validation/editValidation";
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
 
 const CardPage = () => {
   const { id } = useParams();
   const [inputsErrorsState, setInputsErrorsState] = useState(null);
   const [buttonValid, setButtonValid] = useState(false);
   const [inputState, setInputState] = useState(null);
+  const [initialnputState, setInitialnputState] = useState("");
   const navigate = useNavigate();
   useEffect(() => {
     (async () => {
@@ -41,9 +43,8 @@ const CardPage = () => {
         let newInputState = {
           ...data,
         };
-        if (!data) {
-          return;
-        }
+        setInitialnputState(newInputState);
+
         if (data.image && data.image.url) {
           newInputState.url = data.image.url;
         } else {
@@ -100,15 +101,21 @@ const CardPage = () => {
         return;
       }
       await axios.put("/cards/" + id, inputState);
+      navigate(ROUTES.HOME);
     } catch (err) {
       console.log("error from axios", err.response);
     }
-    /* navigate(ROUTES.LOGIN); */
   };
   const handleInputChange = (ev) => {
     let newInputState = JSON.parse(JSON.stringify(inputState));
     newInputState[ev.target.id] = ev.target.value;
     setInputState(newInputState);
+  };
+  const resetButton = () => {
+    setInputState(initialnputState);
+  };
+  const cancleButoon = () => {
+    navigate(ROUTES.HOME);
   };
   if (!inputState) {
     return <CircularProgress />;
@@ -166,7 +173,7 @@ const CardPage = () => {
             ))}
             <Stack xs={12} spacing={3} direction="row">
               <Button
-                /*  onClick={cancleButoon} */
+                onClick={cancleButoon}
                 fullWidth
                 variant="outlined"
                 color="error"
@@ -174,12 +181,12 @@ const CardPage = () => {
                 Cancle
               </Button>
               <Button
-                /*   onClick={resetButton} */
+                onClick={() => resetButton()}
                 fullWidth
                 variant="outlined"
                 color="success"
               >
-                {/*   <RestartAltIcon /> */}
+                <RestartAltIcon />
               </Button>
             </Stack>
 

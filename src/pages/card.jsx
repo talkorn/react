@@ -18,24 +18,9 @@ import atom from "../logo.svg";
 
 const CardPage = () => {
   const { id } = useParams();
-  const [inputState, setInputState] = useState({
-    id: "",
-    title: "",
-    subTitle: "",
-    description: "",
-    phone: "",
-    img: "",
-    web: "",
-    state: "",
-    country: "",
-    city: "",
-    street: "",
-    email: "",
-    houseNumber: "",
-    zipCode: "",
-    bizNumber: "",
-  });
   const navigate = useNavigate();
+  const [inputState, setInputState] = useState(null);
+
   useEffect(() => {
     (async () => {
       try {
@@ -72,10 +57,10 @@ const CardPage = () => {
         }
         delete newInputState.image;
         delete newInputState.likes;
-        delete newInputState._id;
-        delete newInputState.user_id;
-        /*  delete newInputState.bizNumber;
-        delete newInputState.createdAt;  */
+        /*   delete newInputState._id; */
+        /*   delete newInputState.user_id; */
+        /*  delete newInputState.bizNumber;*/
+        /*   delete newInputState.createdAt; */
         console.log("newInputState", newInputState);
         setInputState(newInputState);
       } catch (err) {
@@ -83,6 +68,19 @@ const CardPage = () => {
       }
     })();
   }, [id]);
+  const moveToEditPage = (id) => {
+    console.log("id", id);
+    navigate(`/edit/${id}`);
+  };
+  const deleteCardFromInitialCardsArr = async () => {
+    try {
+      await axios.delete("cards/" + id);
+      navigate(ROUTES.HOME);
+    } catch (err) {
+      console.log("error from axios", err.response.data);
+    }
+  };
+
   if (!inputState) {
     return <CircularProgress />;
   }
@@ -109,6 +107,9 @@ const CardPage = () => {
           houseNumber={inputState.houseNumber}
           zipCode={inputState.zipCode}
           bizNumber={inputState.bizNumber}
+          createdAt={inputState.createdAt}
+          onEdit={moveToEditPage}
+          onDelete={deleteCardFromInitialCardsArr}
         />
       </Grid>
     </Box>
