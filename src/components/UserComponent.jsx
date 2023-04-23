@@ -8,8 +8,6 @@ const UserComponent = (userArr) => {
   const onChanges = userArr.onChanges;
   const inputsErrorsStates = userArr.inputsErrorsStates;
   const requireds = userArr.required;
-  /*  const inputsErrorsStates = userArr.inputsErrorsStates.descriptions;
-  console.log("userArr.inputsErrorsStates", userArr.inputsErrorsStates); */
 
   return (
     <Fragment>

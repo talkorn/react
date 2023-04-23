@@ -33,6 +33,7 @@ const CardComponent = ({
   onEdit,
   onDelete,
   onFavorite,
+  onFavorites,
   idUser,
   likes,
 }) => {
@@ -78,7 +79,7 @@ const CardComponent = ({
         <Box
           sx={{ display: "flex", width: "100%", justifyContent: "flex-end" }}
         >
-          <Button size="small" onClick={() => onFavorite(id)}>
+          <Button size="small" onClick={() => onFavorites(id)}>
             {likes == idUser && <FavoriteIcon />}
             {likes != idUser && <FavoriteBorderIcon />}
           </Button>

@@ -6,14 +6,24 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import ROUTES from "../routes/ROUTES";
 import useLoggedIn from "../hooks/useLoggedIn";
+import FavoriteTitle from "../components/FavoriteTitle";
+import { useDispatch } from "react-redux";
+import { favoriteActions } from "../store/favorite";
+import { Fragment } from "react";
+
 const FavoritePage = () => {
+  /*  const [favoriteArr, setFavoriteArr] = useState([]); */
   const [cardsArr, setCardsArr] = useState(null);
-  const [likesChanged, setLikesChanged] = useState(null);
+  /* const [likesChanged, setLikesChanged] = useState(null); */
+  const favoriteCounter = useSelector((state) => state.favoriteSlice.counter);
+  console.log("favoriteArr", favoriteCounter);
+
+  const dispatch = useDispatch();
   const LoggedIn = useLoggedIn();
   const navigate = useNavigate();
   const isLoggedIn = useSelector((thestore) => thestore.authSlice);
   const payload = useSelector((store) => store.authSlice.payload);
-
+  /* dispatch(); */
   useEffect(() => {
     LoggedIn();
 
@@ -23,10 +33,11 @@ const FavoritePage = () => {
         console.log("data", data);
         setCardsArr(data);
       })
+
       .catch((err) => {
         console.log("err from axios", err);
       });
-  }, [likesChanged]);
+  }, [favoriteCounter]);
   if (!payload) {
     return;
   }
@@ -41,6 +52,20 @@ const FavoritePage = () => {
   if (!cardsArr) {
     return <CircularProgress />;
   }
+  const apdateFaforiteArrInitial = () => {
+    if (favoriteCounter === 0) {
+      console.log("cardsArr.likes", cardsArr);
+      console.log("idUser", idUser);
+
+      for (cardsArr.likes of cardsArr) {
+        console.log("cardsArr.likes", cardsArr.likes.likes);
+        if (cardsArr.likes.likes == idUser) {
+          console.log("idUser", idUser);
+          dispatch(favoriteActions.addToFavorite());
+        }
+      }
+    }
+  };
   const moveToCardPage = (id) => {
     console.log("id", id);
     navigate(`/card/${id}`);
@@ -58,17 +83,32 @@ const FavoritePage = () => {
  
     console.log("here");
   }; */
-  const addToFavorite = async (id) => {
+  const addToFavorites = async (id) => {
+    apdateFaforiteArrInitial();
     await axios.patch(`/cards/card-like/${id}`);
+    const arrr = cardsArr.filter((item) => item.likes == idUser && idUser);
 
     try {
       const { data } = await axios.get("http://localhost:8181/api/cards/cards");
       setCardsArr(data);
+
+      /*  let favoriteArr = data.filter((item) => item.likes == idUser);
+      console.log("favoriteArr", favoriteArr); */
+      const newFavoriteArr = data.filter((item) => item.likes == idUser);
+      if (newFavoriteArr > arrr) {
+        dispatch(favoriteActions.addToFavorite());
+      } else {
+        dispatch(favoriteActions.removeFromFavorite());
+      }
+      /*   console.log("favoriteArr", newFavoriteArr);
+      setFavoriteArr(newFavoriteArr); */
     } catch (err) {
       console.log("Error fetching updated card list", err);
     }
   };
-  const deleteCardFromInitialCardsArr = async (id) => {
+  /* const handleAddToFavorite = (card) => {};
+  const handleRemoveFromFavorite = (card) => {}; */
+  /*  const deleteCardFromInitialCardsArr = async (id) => {
     try {
       console.log("id", id);
       setCardsArr((cardsArr) => cardsArr.filter((item) => item.likes == id));
@@ -77,18 +117,34 @@ const FavoritePage = () => {
     } catch (err) {
       console.log("error when deleting", err.response.data);
     }
-  };
+  }; */
+  /*   if (!favoriteArr) {
+    return;
+  } */
 
   return (
     <Box>
       <h1>Favorite</h1>
-      {/*   {!cardsArr && <h2>you dont have any favorite cards</h2>}
+      {/*   {!cardsArr && <h2>Your favorite cards cart is empty</h2>}
 
       {cardsArr && <h2>Here You Can See All Your Favorite Cards</h2>}
  */}
-      {/*  {(!cardsArr || cardsArr.length === 0) && (
-        <h2>you don't have any favorite cards</h2>
+      {/*   {!cardsArr.filter((item) => item.likes == idUser && idUser) && (
+        <h2>Your favorite cards cart is empty</h2>
+      )}
+      {cardsArr.filter((item) => item.likes == idUser && idUser) && (
+        <h2>Here You Can See All Your Favorite Cards</h2>
       )} */}
+      {/* {cardsArr.filter((item) => item.likes === idUser).length === 0 ? (
+        <h2>Your favorite cards cart is empty</h2>
+      ) : (
+        <h2>Here You Can See All Your Favorite Cards</h2>
+      )} */}
+      {cardsArr.filter((item) => item.likes == idUser).length == 0 ? (
+        <h2>Your favorite cards cart is empty</h2>
+      ) : (
+        <h2>Here You Can See All Your Favorite Cards</h2>
+      )}
       <Grid container spacing={2}>
         {cardsArr &&
           cardsArr
@@ -96,6 +152,11 @@ const FavoritePage = () => {
             .map((item) => (
               <Grid item xs={4} key={item._id + Date.now()}>
                 <CardComponent
+                  /*  onFavorite={
+                    favoriteArr.includes(item)
+                      ? handleRemoveFromFavorite.bind(item)
+                      : handleAddToFavorite.bind(item)
+                  } */
                   likes={item.likes}
                   idUser={idUser}
                   onClick={moveToCardPage}
@@ -115,8 +176,8 @@ const FavoritePage = () => {
                   zipCode={item.zipCode}
                   bizNumber={item.bizNumber}
                   onEdit={moveToEditPage}
-                  onDelete={deleteCardFromInitialCardsArr}
-                  onFavorite={addToFavorite}
+                  /*   onDelete={deleteCardFromInitialCardsArr} */
+                  onFavorites={addToFavorites}
                 />
               </Grid>
             ))}

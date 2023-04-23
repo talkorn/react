@@ -63,6 +63,7 @@ const CardPage = () => {
         delete newInputState.image;
         delete newInputState.likes;
         delete newInputState._id;
+        delete newInputState.__v;
         delete newInputState.user_id;
         delete newInputState.bizNumber;
         delete newInputState.createdAt;
@@ -109,6 +110,7 @@ const CardPage = () => {
   const handleInputChange = (ev) => {
     let newInputState = JSON.parse(JSON.stringify(inputState));
     newInputState[ev.target.id] = ev.target.value;
+    console.log(newInputState);
     setInputState(newInputState);
   };
   const resetButton = () => {
@@ -198,7 +200,7 @@ const CardPage = () => {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign Up
+              Save
             </Button>
           </Grid>
         </Box>

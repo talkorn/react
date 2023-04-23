@@ -8,11 +8,13 @@ import Typography from "@mui/material/Typography";
 import CallIcon from "@mui/icons-material/Call";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/Favorite";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import PropTypes from "prop-types";
 
 const SingleCardPageComponent = ({
+  onFavorites,
   id,
   title,
   subTitle,
@@ -31,6 +33,8 @@ const SingleCardPageComponent = ({
   createdAt,
   onEdit,
   onDelete,
+  idUser,
+  likes,
 }) => {
   return (
     <Card sx={{ margin: "auto", maxWidth: 550 }}>
@@ -88,8 +92,9 @@ const SingleCardPageComponent = ({
         <Box
           sx={{ display: "flex", width: "100%", justifyContent: "flex-end" }}
         >
-          <Button size="small">
-            <FavoriteIcon />
+          <Button size="small" onClick={() => onFavorites(id)}>
+            {likes == idUser && <FavoriteIcon />}
+            {likes != idUser && <FavoriteBorderIcon />}
           </Button>
           <Button size="small">
             <CallIcon />

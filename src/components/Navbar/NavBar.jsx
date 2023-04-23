@@ -14,6 +14,7 @@ import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import ROUTES from "../../routes/ROUTES";
 import NavLinkComponent from "./NavLinkComponent";
+import { Link } from "react-router-dom";
 
 const pages = [
   {
@@ -80,8 +81,8 @@ function ResponsiveAppBar() {
           <Typography
             variant="h6"
             noWrap
-            component="a"
-            href={ROUTES.HOME}
+            component={Link}
+            to={ROUTES.HOME}
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -135,8 +136,8 @@ function ResponsiveAppBar() {
           <Typography
             variant="h5"
             noWrap
-            component="a"
-            href=""
+            component={Link}
+            to={ROUTES.HOME}
             sx={{
               mr: 2,
               display: { xs: "flex", md: "none" },

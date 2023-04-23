@@ -6,30 +6,65 @@ import { useNavigate } from "react-router-dom";
 import ROUTES from "../routes/ROUTES";
 import { useSelector } from "react-redux";
 import useLoggedIn from "../hooks/useLoggedIn";
+import { favoriteActions } from "../store/favorite";
+import { useDispatch } from "react-redux";
+import favoriteSlice from "../store/favorite";
+
 const HomePage = () => {
+  const favoriteArr = useSelector((state) => state.favoriteSlice.counter);
   const [cardsArr, setCardsArr] = useState(null);
   const navigate = useNavigate();
   const LoggedIn = useLoggedIn();
+  const dispatch = useDispatch();
   const payload = useSelector((store) => store.authSlice.payload);
+  useEffect(() => {}, [favoriteArr]);
+
   useEffect(() => {
+    /*  dispatch(); */
     LoggedIn();
+
     axios
       .get("http://localhost:8181/api/cards/cards")
       .then(({ data }) => {
         console.log("data", data);
         setCardsArr(data);
+        /*  if (data) {
+          for (data.likes of data) {
+            if (data.likes == idUser) {
+              dispatch(favoriteActions.addToFavorite());
+            }
+          }
+        } */
+        /*  const newFavoriteArr = data.filter((item) => item.likes == idUser); */
+        console.log("favoriteArr", favoriteArr);
       })
       .catch((err) => {
         console.log("err from axios", err);
       });
-  }, []);
+  }, [favoriteArr]);
   if (!payload) {
     return;
   }
   const idUser = payload._id;
+
   if (!cardsArr) {
     return <CircularProgress />;
   }
+  const apdateFaforiteArrInitial = () => {
+    if (favoriteArr === 0) {
+      console.log("cardsArr.likes", cardsArr);
+      console.log("idUser", idUser);
+
+      for (cardsArr.likes of cardsArr) {
+        console.log("cardsArr.likes", cardsArr.likes.likes);
+        if (cardsArr.likes.likes == idUser) {
+          console.log("idUser", idUser);
+          dispatch(favoriteActions.addToFavorite());
+        }
+      }
+    }
+  };
+
   const moveToCardPage = (id) => {
     console.log("id", id);
     navigate(`/card/${id}`);
@@ -44,15 +79,33 @@ const HomePage = () => {
   };
    */
   const addToFavorite = async (id) => {
+    apdateFaforiteArrInitial();
     await axios.patch(`/cards/card-like/${id}`);
-
+    const arrr = cardsArr.filter((item) => item.likes == idUser && idUser);
     try {
       const { data } = await axios.get("http://localhost:8181/api/cards/cards");
       setCardsArr(data);
+      const newFavoriteArr = data.filter((item) => item.likes == idUser);
+      if (newFavoriteArr > arrr) {
+        dispatch(favoriteActions.addToFavorite());
+        localStorage.setItem("favorite", JSON.stringify(newFavoriteArr));
+        console.log("favoriteArr", favoriteArr);
+      } else {
+        dispatch(favoriteActions.removeFromFavorite());
+        localStorage.removeItem("favorite");
+      }
     } catch (err) {
       console.log("Error fetching updated card list", err);
+      console.log("favoriteArr", favoriteArr);
     }
   };
+
+  /*  const handleAddToFavorite = (card) => {
+    dispatch(favoriteActions.addToFavorite(card));
+  };
+  const handleRemoveFromFavorite = (card) => {
+    dispatch(favoriteActions.removeFromFavorite(card));
+  }; */
   const deleteCardFromInitialCardsArr = async (id) => {
     try {
       console.log("id", id);
@@ -72,6 +125,11 @@ const HomePage = () => {
           <Grid item xs={4} key={item._id + Date.now()}>
             {" "}
             <CardComponent
+              /*  onFavorite={
+                favoriteArr.includes(item)
+                  ? handleRemoveFromFavorite.bind(item)
+                  : handleAddToFavorite.bind(item)
+              } */
               likes={item.likes}
               idUser={idUser}
               onClick={moveToCardPage}
@@ -92,7 +150,7 @@ const HomePage = () => {
               bizNumber={item.bizNumber}
               onEdit={moveToEditPage}
               onDelete={deleteCardFromInitialCardsArr}
-              onFavorite={addToFavorite}
+              onFavorites={addToFavorite}
             />
           </Grid>
         ))}
