@@ -14,7 +14,8 @@ import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import ROUTES from "../../routes/ROUTES";
 import NavLinkComponent from "./NavLinkComponent";
-import { Link } from "react-router-dom";
+
+import { Link, useNavigate } from "react-router-dom";
 
 const pages = [
   {
@@ -34,7 +35,7 @@ const pages = [
     url: ROUTES.SANDBOX,
   },
 ];
-/* const pages = ["About", "Fav Cards", "My Cards", "SandBox"]; */
+/* const pages = ["About", "Fav Card", "My Cards", "SandBox"]; */
 const settings = [
   {
     label: "Profile",
@@ -55,6 +56,7 @@ const settings = [
 ];
 
 function ResponsiveAppBar() {
+  const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -125,11 +127,17 @@ function ResponsiveAppBar() {
                 display: { xs: "block", md: "none" },
               }}
             >
-              {/*   {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+              {pages.map((page) => (
+                <MenuItem key={page.url} onClick={handleCloseNavMenu}>
+                  <Link to={page.url}>{page.label}</Link>
                 </MenuItem>
-              ))} */}
+              ))}
+
+              {settings.map((settings) => (
+                <MenuItem key={settings.url} onClick={handleCloseNavMenu}>
+                  <Link to={settings.url}>{settings.label}</Link>
+                </MenuItem>
+              ))}
             </Menu>
           </Box>
           <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
@@ -170,7 +178,7 @@ function ResponsiveAppBar() {
               </IconButton>
             </Box>
 
-            {/*  <Menu
+            {/*   <Menu
               sx={{ mt: "45px" }}
               id="menu-appbar"
               anchorEl={anchorElUser}
@@ -187,8 +195,8 @@ function ResponsiveAppBar() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+                <MenuItem key={setting.url} onClick={handleCloseUserMenu}>
+                  {setting.label}
                 </MenuItem>
               ))}
             </Menu> */}

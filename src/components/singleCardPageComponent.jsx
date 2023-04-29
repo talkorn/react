@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 import CallIcon from "@mui/icons-material/Call";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import FavoriteBorderIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import PropTypes from "prop-types";
@@ -35,7 +35,10 @@ const SingleCardPageComponent = ({
   onDelete,
   idUser,
   likes,
+  onClick,
 }) => {
+  if (idUser && likes) {
+  }
   return (
     <Card sx={{ margin: "auto", maxWidth: 550 }}>
       <CardMedia
@@ -44,7 +47,7 @@ const SingleCardPageComponent = ({
         image={img}
         title={title}
       />{" "}
-      <CardContent>
+      <CardContent onClick={() => onClick(id)}>
         <Typography gutterBottom variant="h5" component="div">
           {title}
         </Typography>
@@ -96,6 +99,7 @@ const SingleCardPageComponent = ({
             {likes == idUser && <FavoriteIcon />}
             {likes != idUser && <FavoriteBorderIcon />}
           </Button>
+
           <Button size="small">
             <CallIcon />
           </Button>

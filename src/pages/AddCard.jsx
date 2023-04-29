@@ -1,3 +1,6 @@
+/* 
+    , */
+
 import { useState, useEffect, Fragment } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -19,15 +22,34 @@ import Stack from "@mui/material/Stack";
 import CardMedia from "@mui/material/CardMedia";
 import validateEditSchema from "../validation/editValidation";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
-
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const CardPage = () => {
   const { id } = useParams();
-  const [inputsErrorsState, setInputsErrorsState] = useState("");
+  const [inputsErrorsState, setInputsErrorsState] = useState(null);
   const [buttonValid, setButtonValid] = useState(false);
-  const [inputState, setInputState] = useState("");
+  const initialCard = {
+    title: "",
+    subTitle: "",
+    description: "",
+    phone: "",
+    email: "",
+    web: "",
+    url: "https://cdn.pixabay.com/photo/2017/11/10/05/24/add-2935429_1280.png",
+    alt: "",
+    state: "",
+    country: "",
+    city: "",
+    street: "",
+    houseNumber: "",
+    zipCode: "",
+  };
+  const [inputState, setInputState] = useState(initialCard);
+
   const [initialnputState, setInitialnputState] = useState("");
   const navigate = useNavigate();
-  useEffect(() => {
+  /*  useEffect(() => {
     (async () => {
       try {
         if (!id) {
@@ -43,6 +65,7 @@ const CardPage = () => {
         let newInputState = {
           ...data,
         };
+        setInitialnputState(newInputState);
 
         if (data.image && data.image.url) {
           newInputState.url = data.image.url;
@@ -53,9 +76,6 @@ const CardPage = () => {
           newInputState.alt = data.image.alt;
         } else {
           newInputState.alt = "";
-        }
-        if (data.image && !data.zipCode) {
-          newInputState.zipCode = "";
         }
         if (data.bizNumber && data.image.alt) {
           newInputState.alt = data.image.alt;
@@ -71,12 +91,11 @@ const CardPage = () => {
         delete newInputState.createdAt;
         console.log("newInputState", newInputState);
         setInputState(newInputState);
-        setInitialnputState(newInputState);
       } catch (err) {
         console.log("error from axios", err);
       }
     })();
-  }, [id]);
+  }, [id]); */
   useEffect(() => {
     const joiResponse = validateEditSchema(inputState);
     setInputsErrorsState(joiResponse);
@@ -92,7 +111,8 @@ const CardPage = () => {
       inputState.web &&
       inputState.city &&
       inputState.street &&
-      inputState.houseNumber
+      inputState.houseNumber &&
+      inputState.description
     ) {
       setButtonValid(true);
     } else {
@@ -105,10 +125,13 @@ const CardPage = () => {
       if (inputsErrorsState) {
         return;
       }
-      await axios.put("/cards/" + id, inputState);
+      await axios.post("/cards/", inputState);
+      toast.success("Great! a new Business Card has been created");
+
       navigate(ROUTES.HOME);
     } catch (err) {
       console.log("error from axios", err.response);
+      toast.error("something went wrong");
     }
   };
   const handleInputChange = (ev) => {
@@ -118,8 +141,10 @@ const CardPage = () => {
     setInputState(newInputState);
   };
   const resetButton = () => {
-    setInputState(initialnputState);
+    setInputState(initialCard);
+    setButtonValid(false);
   };
+  /* const notify = () => toast("Great! a new Business Card has been created"); */
   const cancleButoon = () => {
     navigate(ROUTES.HOME);
   };
@@ -138,10 +163,10 @@ const CardPage = () => {
         }}
       >
         <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-          <EditIcon />
+          <AddCircleIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Edit Page
+          Add Card
         </Typography>
         <CardMedia
           component="img"

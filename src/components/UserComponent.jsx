@@ -2,6 +2,8 @@ import Alert from "@mui/material/Alert";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import { Fragment } from "react";
+import PropTypes from "prop-types";
+
 const UserComponent = (userArr) => {
   const descriptions = userArr.description;
   const inputStates = userArr.inputStates;
@@ -35,4 +37,12 @@ const UserComponent = (userArr) => {
     </Fragment>
   );
 };
+UserComponent.propTypes = {
+  description: PropTypes.string.isRequired,
+  inputStates: PropTypes.object.isRequired,
+  onChanges: PropTypes.func,
+  inputsErrorsStates: PropTypes.object,
+  required: PropTypes.bool,
+};
+
 export default UserComponent;

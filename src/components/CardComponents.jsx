@@ -118,4 +118,5 @@ CardComponent.defaultProps = {
   subTitle: "",
   canEdit: false,
 };
+
 export default CardComponent;
