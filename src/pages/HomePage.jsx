@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import ROUTES from "../routes/ROUTES";
 import { useSelector } from "react-redux";
 import useLoggedIn from "../hooks/useLoggedIn";
-
+import CssBaseline from "@mui/material/CssBaseline";
 const HomePage = () => {
   const [cardsArr, setCardsArr] = useState(null);
   const navigate = useNavigate();
@@ -68,6 +68,7 @@ const HomePage = () => {
   };
   return (
     <Box>
+      <CssBaseline />
       <h1>Cards Page</h1>
       <h2>Here You Can Find All Our Buisness Cards</h2>
       <Grid container spacing={2}>

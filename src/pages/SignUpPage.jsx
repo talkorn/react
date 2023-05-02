@@ -17,6 +17,8 @@ import axios from "axios";
 import UserComponent from "../components/UserComponent";
 import { useNavigate } from "react-router-dom";
 import ROUTES from "../routes/ROUTES";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const SignUpPage = () => {
   const resaetInputState = {
     firstName: "",
@@ -54,8 +56,8 @@ const SignUpPage = () => {
       inputState.password &&
       inputState.city &&
       inputState.street &&
-      inputState.houseNumber &&
-      inputState.zipCode
+      inputState.houseNumber /* &&
+      inputState.zipCode */
     ) {
       setButtonValid(true);
     }
@@ -74,7 +76,12 @@ const SignUpPage = () => {
       if (inputsErrorsState) {
         return;
       }
-      await axios.post("users/register", {
+      if (!inputState.zipCode) {
+        delete inputState.zipCode;
+      }
+      await axios.post(
+        "users/register",
+        inputState /* {
         firstName: inputState.firstName,
         email: inputState.email,
         password: inputState.password,
@@ -90,11 +97,14 @@ const SignUpPage = () => {
         houseNumber: inputState.houseNumber,
         zipCode: inputState.zipCode,
         biz: agreement,
-      });
+      } */
+      );
+      toast.success("Registration Completed");
+      navigate(ROUTES.LOGIN);
     } catch (err) {
       console.log("error from axios", err.response);
+      toast.error(err.response.data);
     }
-    navigate(ROUTES.LOGIN);
   };
   const handleInputChange = (ev) => {
     let newInputState = JSON.parse(JSON.stringify(inputState));
@@ -138,7 +148,7 @@ const SignUpPage = () => {
               { description: "city", required: true },
               { description: "street", required: true },
               { description: "houseNumber", required: true },
-              { description: "zipCode", required: true },
+              { description: "zipCode", required: false },
             ].map((props) => (
               <Grid item xs={12} sm={6} key={props.description}>
                 <UserComponent

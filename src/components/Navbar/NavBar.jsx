@@ -8,14 +8,17 @@ import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import ROUTES from "../../routes/ROUTES";
+import store from "../../store/theStore";
 import NavLinkComponent from "./NavLinkComponent";
-
+import { darkModeActions } from "../../store/darkMode";
 import { Link, useNavigate } from "react-router-dom";
+import Checkbox from "@mui/material/Checkbox";
+import { useSelector, useDispatch } from "react-redux";
+import WbSunnyIcon from "@mui/icons-material/WbSunny";
+import ModeNightIcon from "@mui/icons-material/ModeNight";
 
 const pages = [
   {
@@ -59,7 +62,11 @@ function ResponsiveAppBar() {
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-
+  const isDarkMode = useSelector((store) => store.darkModeSlice.isDarkMode);
+  const dispatch = useDispatch();
+  const changeMode = () => {
+    dispatch(darkModeActions.changeMode());
+  };
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -80,6 +87,7 @@ function ResponsiveAppBar() {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+          <Box sx={{ my: 2, p: 1 }}></Box>
           <Typography
             variant="h6"
             noWrap
@@ -89,15 +97,27 @@ function ResponsiveAppBar() {
               mr: 2,
               display: { xs: "none", md: "flex" },
               fontFamily: "monospace",
-              fontWeight: 700,
+              fontWeight: 300,
               letterSpacing: ".3rem",
               color: "inherit",
               textDecoration: "none",
+              "&:hover": {
+                color: "blue",
+              },
             }}
           >
             Tal's Cards
           </Typography>
-
+          <Typography sx={{ display: { xs: "none", md: "inline" }, m: 1 }}>
+            {isDarkMode ? "Dark " : "Light "}Mode
+          </Typography>
+          <Checkbox
+            edge="start"
+            icon={<WbSunnyIcon color="secondary" />}
+            checkedIcon={<ModeNightIcon color="warning" />}
+            checked={isDarkMode}
+            onClick={changeMode}
+          />
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
@@ -109,6 +129,7 @@ function ResponsiveAppBar() {
             >
               <MenuIcon />
             </IconButton>
+
             <Menu
               id="menu-appbar"
               anchorEl={anchorElNav}
@@ -128,14 +149,27 @@ function ResponsiveAppBar() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page.url} onClick={handleCloseNavMenu}>
-                  <Link to={page.url}>{page.label}</Link>
+                <MenuItem
+                  key={page.url}
+                  color="inherit"
+                  onClick={handleCloseNavMenu}
+                >
+                  <Link to={page.url}>
+                    <Typography sx={{ textDecoration: "none", color: "pink" }}>
+                      {page.label}{" "}
+                    </Typography>
+                  </Link>
                 </MenuItem>
               ))}
 
               {settings.map((settings) => (
                 <MenuItem key={settings.url} onClick={handleCloseNavMenu}>
-                  <Link to={settings.url}>{settings.label}</Link>
+                  <Link to={settings.url}>
+                    {" "}
+                    <Typography sx={{ textDecoration: "none", color: "pink" }}>
+                      {settings.label}
+                    </Typography>
+                  </Link>
                 </MenuItem>
               ))}
             </Menu>
@@ -152,19 +186,18 @@ function ResponsiveAppBar() {
               flexGrow: 1,
               fontFamily: "monospace",
               fontWeight: 700,
-              letterSpacing: ".3rem",
+              /*  letterSpacing: ".1rem", */
               color: "inherit",
               textDecoration: "none",
             }}
           >
-            LOGO
+            Tal's<br></br> Cards
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
               <NavLinkComponent key={page.url} {...page} />
             ))}
           </Box>
-
           <Box sx={{ flexGrow: 0 }}>
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
               {settings.map((setting) => (

@@ -18,7 +18,8 @@ import logInValidationSchema from "../validation/logInValidation";
 import axios from "axios";
 import useLoggedIn from "../hooks/useLoggedIn";
 import { Alert } from "@mui/material";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const LogIn = () => {
   const loggedIn = useLoggedIn();
   const [inputsErrorsState, setInputsErrorsState] = useState(null);
@@ -42,10 +43,12 @@ const LogIn = () => {
       const { data } = await axios.post("/users/login", inputState);
       console.log("data", data);
       localStorage.setItem("token", data.token);
+      toast.success("SignIn Completed");
       loggedIn();
       navigate(ROUTES.HOME);
     } catch (err) {
       console.log("login error", err);
+      toast.error(err.response.data);
     }
   };
   const handleInputChange = (ev) => {
@@ -69,7 +72,7 @@ const LogIn = () => {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign in
+          Log in
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField

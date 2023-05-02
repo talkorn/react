@@ -5,6 +5,7 @@ import CardComponent from "../components/CardComponents";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import useLoggedIn from "../hooks/useLoggedIn";
+import CssBaseline from "@mui/material/CssBaseline";
 const FavoritePage = () => {
   const [cardsArr, setCardsArr] = useState(null);
   const LoggedIn = useLoggedIn();
@@ -56,6 +57,7 @@ const FavoritePage = () => {
 
   return (
     <Box>
+      <CssBaseline />
       <h1>Favorite</h1>
 
       {cardsArr.filter((item) => item.likes == idUser).length == 0 ? (

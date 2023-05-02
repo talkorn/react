@@ -11,7 +11,7 @@ const NavLinkComponent = ({ url, label }) => {
             display: "block",
             p: 2,
           }}
-          color={isActive ? "error" : "info"}
+          color={isActive ? "green" : "pink"}
         >
           {label}
         </Typography>

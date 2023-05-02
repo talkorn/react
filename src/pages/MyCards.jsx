@@ -9,6 +9,7 @@ import Container from "@mui/material/Container";
 import { useSelector } from "react-redux";
 import useLoggedIn from "../hooks/useLoggedIn";
 import axios from "axios";
+import CssBaseline from "@mui/material/CssBaseline";
 
 const MyCardsPage = () => {
   const [cardsArr, setCardsArr] = useState(null);
@@ -74,6 +75,7 @@ const MyCardsPage = () => {
   };
   return (
     <Box>
+      <CssBaseline />
       <h1>Cards Page</h1>
       <h2>Here You Can Find All Our Buisness Cards</h2>
       <Grid item xs={4}>

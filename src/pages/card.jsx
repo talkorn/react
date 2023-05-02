@@ -12,7 +12,7 @@ import { CircularProgress } from "@mui/material";
 import atom from "../logo.svg";
 import { useSelector } from "react-redux";
 import useLoggedIn from "../hooks/useLoggedIn";
-
+import CssBaseline from "@mui/material/CssBaseline";
 import { useDispatch } from "react-redux";
 
 const CardPage = () => {
@@ -115,6 +115,7 @@ const CardPage = () => {
   }
   return (
     <Box>
+      <CssBaseline />
       <Grid sx={{ textAlign: "center" }}>
         <h1>Card Page</h1>
         <h2> {inputState.title}</h2>

@@ -96,8 +96,8 @@ const SingleCardPageComponent = ({
           sx={{ display: "flex", width: "100%", justifyContent: "flex-end" }}
         >
           <Button size="small" onClick={() => onFavorites(id)}>
-            {likes == idUser && <FavoriteIcon />}
-            {likes != idUser && <FavoriteBorderIcon />}
+            {likes == idUser && <FavoriteIcon color="secondary" />}
+            {likes != idUser && <FavoriteBorderIcon color="secondary" />}
           </Button>
 
           <Button size="small">
