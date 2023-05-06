@@ -10,8 +10,11 @@ import { useSelector } from "react-redux";
 import useLoggedIn from "../hooks/useLoggedIn";
 import axios from "axios";
 import CssBaseline from "@mui/material/CssBaseline";
-
+import useQueryParams from "../hooks/useQueryParam.js";
+import filterFunction from "../utilis/filterFunc.js";
 const MyCardsPage = () => {
+  const searchParams = useQueryParams();
+  const [originalCardsArr, setOriginalCardsArr] = useState(null);
   const [cardsArr, setCardsArr] = useState(null);
   const navigate = useNavigate();
   const LoggedIn = useLoggedIn();
@@ -25,12 +28,26 @@ const MyCardsPage = () => {
       .get("/cards/my-cards")
       .then(({ data }) => {
         console.log("data", data);
-        setCardsArr(data);
+        filterFunc(data);
       })
       .catch((err) => {
         console.log("err from axios", err);
       });
   }, []);
+  const filterFunc = (data) => {
+    let dataToSearch = originalCardsArr || data;
+    console.log(dataToSearch);
+    if (!dataToSearch) {
+      return;
+    }
+    let searchResult = filterFunction(dataToSearch, searchParams);
+
+    setOriginalCardsArr(dataToSearch);
+    setCardsArr(searchResult);
+  };
+  useEffect(() => {
+    filterFunc();
+  }, [searchParams.filter]);
   if (!payload) {
     return;
   }
@@ -127,6 +144,10 @@ const MyCardsPage = () => {
                 onEdit={moveToEditPage}
                 onDelete={deleteCardFromInitialCardsArr}
                 onFavorites={addToFavorite}
+                canEdit={payload && (payload.biz || payload.isAdmin)}
+                canDelete={payload && payload.isAdmin}
+                canUser={payload && payload._id}
+                cardIdUser={item.user_id}
               />
             </Grid>
           ))}{" "}

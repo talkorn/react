@@ -25,6 +25,7 @@ import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
 const CardPage = () => {
   const { id } = useParams();
   const [inputsErrorsState, setInputsErrorsState] = useState(null);
@@ -37,6 +38,7 @@ const CardPage = () => {
     email: "",
     web: "",
     url: "https://cdn.pixabay.com/photo/2017/11/10/05/24/add-2935429_1280.png",
+
     alt: "",
     state: "",
     country: "",

@@ -14,7 +14,7 @@ import { useSelector } from "react-redux";
 import useLoggedIn from "../hooks/useLoggedIn";
 import CssBaseline from "@mui/material/CssBaseline";
 import { useDispatch } from "react-redux";
-
+import CardComponent from "../components/CardComponents";
 const CardPage = () => {
   const payload = useSelector((store) => store.authSlice.payload);
   const LoggedIn = useLoggedIn();
@@ -63,10 +63,12 @@ const CardPage = () => {
       }
     })();
   }, [id]);
-  if (!payload) {
-    return;
+  let idUser;
+  if (payload) {
+    idUser = payload._id;
+    // rest of the code here
   }
-  const idUser = payload._id;
+
   const moveToEditPage = (id) => {
     navigate(`/edit/${id}`);
   };
@@ -152,6 +154,10 @@ const CardPage = () => {
           createdAt={inputState.createdAt}
           onEdit={moveToEditPage}
           onDelete={deleteCardFromInitialCardsArr}
+          canEdit={payload && (payload.biz || payload.isAdmin)}
+          canDelete={payload && payload.isAdmin}
+          canUser={payload && payload._id}
+          cardIdUser={inputState.user_id}
         />
       </Grid>
     </Box>

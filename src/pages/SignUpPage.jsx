@@ -79,26 +79,7 @@ const SignUpPage = () => {
       if (!inputState.zipCode) {
         delete inputState.zipCode;
       }
-      await axios.post(
-        "users/register",
-        inputState /* {
-        firstName: inputState.firstName,
-        email: inputState.email,
-        password: inputState.password,
-        middleName: inputState.middleName,
-        lastName: inputState.lastName,
-        phone: inputState.phone,
-        imageUrl: inputState.imageUrl,
-        imageAlt: inputState.imageAlt,
-        state: inputState.state,
-        country: inputState.country,
-        city: inputState.city,
-        street: inputState.street,
-        houseNumber: inputState.houseNumber,
-        zipCode: inputState.zipCode,
-        biz: agreement,
-      } */
-      );
+      await axios.post("users/register", inputState);
       toast.success("Registration Completed");
       navigate(ROUTES.LOGIN);
     } catch (err) {

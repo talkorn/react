@@ -36,6 +36,10 @@ const SingleCardPageComponent = ({
   idUser,
   likes,
   onClick,
+  canEdit,
+  canUser,
+  canDelete,
+  cardIdUser,
 }) => {
   if (idUser && likes) {
   }
@@ -85,21 +89,34 @@ const SingleCardPageComponent = ({
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small" onClick={() => onDelete(id)}>
-          <DeleteIcon />
-        </Button>
-        <Button variant="text" color="warning" onClick={() => onEdit(id)}>
-          Edit
-        </Button>
-
+        {canDelete || (canEdit && cardIdUser === idUser) ? (
+          <Button size="small" onClick={() => onDelete(id)}>
+            <DeleteIcon />
+          </Button>
+        ) : (
+          ""
+        )}
+        {canEdit && cardIdUser === idUser ? (
+          <Button variant="text" color="warning" onClick={() => onEdit(id)}>
+            Edit
+          </Button>
+        ) : (
+          ""
+        )}
         <Box
           sx={{ display: "flex", width: "100%", justifyContent: "flex-end" }}
         >
-          <Button size="small" onClick={() => onFavorites(id)}>
-            {likes == idUser && <FavoriteIcon color="secondary" />}
-            {likes != idUser && <FavoriteBorderIcon color="secondary" />}
-          </Button>
-
+          {canUser ? (
+            <Button size="small" onClick={() => onFavorites(id)}>
+              {likes.includes(idUser) ? (
+                <FavoriteIcon color="secondary" />
+              ) : (
+                <FavoriteBorderIcon color="secondary" />
+              )}
+            </Button>
+          ) : (
+            ""
+          )}
           <Button size="small">
             <CallIcon />
           </Button>

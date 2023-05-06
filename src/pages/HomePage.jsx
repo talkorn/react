@@ -7,31 +7,58 @@ import ROUTES from "../routes/ROUTES";
 import { useSelector } from "react-redux";
 import useLoggedIn from "../hooks/useLoggedIn";
 import CssBaseline from "@mui/material/CssBaseline";
+import useQueryParams from "../hooks/useQueryParam.js";
+import filterFunction from "../utilis/filterFunc.js";
 const HomePage = () => {
+  const [originalCardsArr, setOriginalCardsArr] = useState(null);
   const [cardsArr, setCardsArr] = useState(null);
   const navigate = useNavigate();
-  const LoggedIn = useLoggedIn();
+  /*  const LoggedIn = useLoggedIn(); */
+  const searchParams = useQueryParams();
   const payload = useSelector((store) => store.authSlice.payload);
 
   useEffect(() => {
     /*  dispatch(); */
-    LoggedIn();
+    /* LoggedIn(); */
 
     axios
       .get("http://localhost:8181/api/cards/cards")
       .then(({ data }) => {
         console.log("data", data);
-        setCardsArr(data);
+        filterFunc(data);
       })
       .catch((err) => {
         console.log("err from axios", err);
       });
   }, []);
-  if (!payload) {
-    return;
+  const filterFunc = (data) => {
+    let dataToSearch = originalCardsArr || data;
+    console.log(dataToSearch);
+    if (!dataToSearch) {
+      return;
+    }
+    let searchResult = filterFunction(dataToSearch, searchParams);
+    /*  let filter = "";
+    console.log("filter", filter);
+    if (searchParams.filter) {
+      filter = searchParams.filter;
+    }
+    let searchResult = dataToSearch.filter(
+      (card) =>
+        card.title.toLowerCase().startsWith(filter.toLowerCase()) ||
+        card.bizNumber.toLowerCase().startsWith(filter.toLowerCase())
+    ); */
+    setOriginalCardsArr(dataToSearch);
+    setCardsArr(searchResult);
+  };
+  useEffect(() => {
+    filterFunc();
+  }, [searchParams.filter]);
+  let idUser;
+  if (payload) {
+    idUser = payload._id;
+    // rest of the code here
   }
-  const idUser = payload._id;
-
   if (!cardsArr) {
     return <CircularProgress />;
   }
@@ -78,6 +105,7 @@ const HomePage = () => {
             <CardComponent
               likes={item.likes}
               idUser={idUser}
+              cardIdUser={item.user_id}
               onClick={moveToCardPage}
               id={item._id}
               title={item.title}
@@ -97,6 +125,9 @@ const HomePage = () => {
               onEdit={moveToEditPage}
               onDelete={deleteCardFromInitialCardsArr}
               onFavorites={addToFavorite}
+              canEdit={payload && (payload.biz || payload.isAdmin)}
+              canDelete={payload && payload.isAdmin}
+              canUser={payload && payload._id}
             />
           </Grid>
         ))}

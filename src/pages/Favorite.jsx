@@ -6,11 +6,16 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import useLoggedIn from "../hooks/useLoggedIn";
 import CssBaseline from "@mui/material/CssBaseline";
+import useQueryParams from "../hooks/useQueryParam.js";
+import filterFunction from "../utilis/filterFunc.js";
 const FavoritePage = () => {
+  const searchParams = useQueryParams();
+  const [originalCardsArr, setOriginalCardsArr] = useState(null);
   const [cardsArr, setCardsArr] = useState(null);
   const LoggedIn = useLoggedIn();
   const navigate = useNavigate();
   const payload = useSelector((store) => store.authSlice.payload);
+
   useEffect(() => {
     LoggedIn();
 
@@ -18,13 +23,27 @@ const FavoritePage = () => {
       .get("http://localhost:8181/api/cards/cards")
       .then(({ data }) => {
         console.log("data", data);
-        setCardsArr(data);
+        filterFunc(data);
       })
 
       .catch((err) => {
         console.log("err from axios", err);
       });
   }, []);
+  const filterFunc = (data) => {
+    let dataToSearch = originalCardsArr || data;
+    console.log(dataToSearch);
+    if (!dataToSearch) {
+      return;
+    }
+    let searchResult = filterFunction(dataToSearch, searchParams);
+
+    setOriginalCardsArr(dataToSearch);
+    setCardsArr(searchResult);
+  };
+  useEffect(() => {
+    filterFunc();
+  }, [searchParams.filter]);
   if (!payload) {
     return;
   }
@@ -68,7 +87,7 @@ const FavoritePage = () => {
       <Grid container spacing={2}>
         {cardsArr &&
           cardsArr
-            .filter((item) => item.likes == idUser && idUser)
+            .filter((item) => item.likes.includes(idUser))
             .map((item) => (
               <Grid item xs={12} sm={6} md={4} key={item._id + Date.now()}>
                 <CardComponent
@@ -98,6 +117,10 @@ const FavoritePage = () => {
                   onEdit={moveToEditPage}
                   /*   onDelete={deleteCardFromInitialCardsArr} */
                   onFavorites={addToFavorites}
+                  canEdit={payload && (payload.biz || payload.isAdmin)}
+                  canDelete={payload && payload.isAdmin}
+                  canUser={payload && payload._id}
+                  cardIdUser={item.user_id}
                 />
               </Grid>
             ))}

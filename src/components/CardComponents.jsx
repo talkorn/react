@@ -32,14 +32,15 @@ const CardComponent = ({
   onClick,
   onEdit,
   onDelete,
-  onFavorite,
   onFavorites,
   idUser,
   likes,
+  canEdit,
+  canUser,
+  canDelete,
+  cardIdUser,
 }) => {
-  if (idUser && likes) {
-    console.log(idUser, likes);
-  }
+  console.log(idUser, likes);
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardMedia
@@ -70,19 +71,34 @@ const CardComponent = ({
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small" onClick={() => onDelete(id)}>
-          <DeleteIcon />
-        </Button>
-        <Button variant="text" color="warning" onClick={() => onEdit(id)}>
-          Edit
-        </Button>
+        {canDelete || (canEdit && cardIdUser === idUser) ? (
+          <Button size="small" onClick={() => onDelete(id)}>
+            <DeleteIcon />
+          </Button>
+        ) : (
+          ""
+        )}
+        {canEdit && cardIdUser === idUser ? (
+          <Button variant="text" color="warning" onClick={() => onEdit(id)}>
+            Edit
+          </Button>
+        ) : (
+          ""
+        )}
         <Box
           sx={{ display: "flex", width: "100%", justifyContent: "flex-end" }}
         >
-          <Button size="small" onClick={() => onFavorites(id)}>
-            {likes == idUser && <FavoriteIcon color="secondary" />}
-            {likes != idUser && <FavoriteBorderIcon color="secondary" />}
-          </Button>
+          {canUser ? (
+            <Button size="small" onClick={() => onFavorites(id)}>
+              {likes.includes(idUser) ? (
+                <FavoriteIcon color="secondary" />
+              ) : (
+                <FavoriteBorderIcon color="secondary" />
+              )}
+            </Button>
+          ) : (
+            ""
+          )}
           <Button size="small">
             <CallIcon />
           </Button>
