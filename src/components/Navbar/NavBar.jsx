@@ -25,13 +25,13 @@ import { authActions } from "../../store/auth";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const pages = [
+/* const pages = [
   {
     label: "About",
     url: ROUTES.ABOUT,
   },
-];
-const usersPages = [
+];*/
+/* const usersPages = [
   {
     label: "Fav Cards",
     url: ROUTES.FAVCARDS,
@@ -39,14 +39,16 @@ const usersPages = [
 ];
 const isAdminorbiz = [
   {
-    label: "My Cards",
-    url: ROUTES.MYCARDS,
-  },
-  {
     label: "SandBox",
     url: ROUTES.SANDBOX,
   },
 ];
+const isBiz = [
+  {
+    label: "My Cards",
+    url: ROUTES.MYCARDS,
+  },
+]; */
 
 /* const pages = ["About", "Fav Card", "My Cards", "SandBox"]; */
 
@@ -90,7 +92,7 @@ function ResponsiveAppBar() {
     setAnchorElNav(event.currentTarget);
   };
   const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
+    setAnchorElUser(event);
   };
 
   const handleCloseNavMenu = () => {
@@ -110,7 +112,6 @@ function ResponsiveAppBar() {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
-          <Box sx={{ my: 2, p: 1 }}></Box>
 
           <Typography
             variant="h6"
@@ -139,9 +140,26 @@ function ResponsiveAppBar() {
             checkedIcon={<ModeNightIcon color="warning" />}
             checked={isDarkMode}
             onClick={changeMode}
-            sx={{ m: 1 }}
+            /* sx={{ m: 1 }} */
           />
+          {/*     <Box
+            sx={{
+              flexGrow: 1,
+              display: { xs: "flex", md: "none" },
+              maxwidth: "100%",
+            }} 
+          >*/}
+
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+            <IconButton
+              size="large"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={handleOpenNavMenu}
+              color="inherit"
+            ></IconButton>
+
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -171,28 +189,56 @@ function ResponsiveAppBar() {
                 display: { xs: "block", md: "none" },
               }}
             >
-              {pages.map((page) => (
+              {/*  {pages.map((page) => (
                 <MenuItem
                   key={page.url}
                   color="inherit"
                   onClick={handleCloseNavMenu}
                 >
-                  <Link to={page.url}>
-                    <Typography sx={{ textDecoration: "none", color: "pink" }}>
-                      {page.label}{" "}
-                    </Typography>
-                  </Link>
-                </MenuItem>
-              ))}
-              {isLoggedIn &&
+                  <Link to={page.url}></Link>
+                </MenuItem> 
+              ))}*/}
+
+              <NavLinkComponent
+                key={ROUTES.ABOUT}
+                url={ROUTES.ABOUT}
+                label="About"
+              />
+              {isLoggedIn && (
+                <NavLinkComponent
+                  key={ROUTES.FAVCARDS}
+                  url={ROUTES.FAVCARDS}
+                  label="Favorite"
+                />
+              )}
+              {payload && (payload.isAdmin || payload.biz) && (
+                <NavLinkComponent
+                  key={ROUTES.SANDBOX}
+                  url={ROUTES.SANDBOX}
+                  label="Sandbox"
+                />
+              )}
+              {payload && payload.biz && (
+                <NavLinkComponent
+                  key={ROUTES.MYCARDS}
+                  url={ROUTES.MYCARDS}
+                  label="MY Cards"
+                />
+              )}
+              {/* {isLoggedIn &&
                 usersPages.map((page) => (
                   <NavLinkComponent key={page.url} {...page} />
-                ))}
-              {payload &&
+                ))} */}
+              {/*  {payload &&
                 (payload.isAdmin || payload.biz) &&
                 isAdminorbiz.map((page) => (
                   <NavLinkComponent key={page.url} {...page} />
-                ))}
+                ))} */}
+              {/*  {payload &&
+                payload.biz &&
+                isBiz.map((page) => (
+                  <NavLinkComponent key={page.url} {...page} />
+                ))} */}
               {isLoggedIn
                 ? authedPages.map((settings) =>
                     settings.url === ROUTES.LOGOUT ? (
@@ -222,7 +268,6 @@ function ResponsiveAppBar() {
                   ))}
             </Menu>
           </Box>
-          <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
           <Typography
             variant="h5"
             noWrap
@@ -243,10 +288,33 @@ function ResponsiveAppBar() {
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <NavLinkComponent key={page.url} {...page} />
-            ))}
-            {isLoggedIn &&
+            <NavLinkComponent
+              key={ROUTES.ABOUT}
+              url={ROUTES.ABOUT}
+              label="About"
+            />
+            {isLoggedIn && (
+              <NavLinkComponent
+                key={ROUTES.FAVCARDS}
+                url={ROUTES.FAVCARDS}
+                label="Favorite"
+              />
+            )}
+            {payload && (payload.isAdmin || payload.biz) && (
+              <NavLinkComponent
+                key={ROUTES.SANDBOX}
+                url={ROUTES.SANDBOX}
+                label="Sandbox"
+              />
+            )}
+            {payload && payload.biz && (
+              <NavLinkComponent
+                key={ROUTES.MYCARDS}
+                url={ROUTES.MYCARDS}
+                label="MY Cards"
+              />
+            )}
+            {/*  {isLoggedIn &&
               usersPages.map((page) => (
                 <NavLinkComponent key={page.url} {...page} />
               ))}
@@ -255,6 +323,11 @@ function ResponsiveAppBar() {
               isAdminorbiz.map((page) => (
                 <NavLinkComponent key={page.url} {...page} />
               ))}
+            {payload &&
+              payload.biz &&
+              isBiz.map((page) => (
+                <NavLinkComponent key={page.url} {...page} />
+              ))} */}
           </Box>
           <SearchFromNav />
           <Box sx={{ flexGrow: 0 }}>

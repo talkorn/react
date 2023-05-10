@@ -21,11 +21,10 @@ const MyCardsPage = () => {
   const payload = useSelector((store) => store.authSlice.payload);
 
   useEffect(() => {
-    /*  dispatch(); */
     LoggedIn();
 
     axios
-      .get("/cards/my-cards")
+      .get("cards/my-cards")
       .then(({ data }) => {
         console.log("data", data);
         filterFunc(data);
@@ -48,10 +47,11 @@ const MyCardsPage = () => {
   useEffect(() => {
     filterFunc();
   }, [searchParams.filter]);
-  if (!payload) {
-    return;
+  let idUser;
+  if (payload) {
+    idUser = payload._id;
+    // rest of the code here
   }
-  const idUser = payload._id;
 
   if (!cardsArr) {
     return <CircularProgress />;
@@ -94,7 +94,7 @@ const MyCardsPage = () => {
     <Box>
       <CssBaseline />
       <h1>Cards Page</h1>
-      <h2>Here You Can Find All Our Buisness Cards</h2>
+      <h2>Here You Can Find All your Buisness Cards</h2>
       <Grid item xs={4}>
         <Box
           sx={{

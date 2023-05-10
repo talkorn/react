@@ -10,7 +10,10 @@ import FavoritePage from "../pages/Favorite";
 import AddCardPage from "../pages/AddCard";
 import MyCardsPage from "../pages/MyCards";
 import LogOutOpage from "../pages/LogOut";
-
+import SandBoxPage from "../pages/SandBoxPage";
+import NestedPage1 from "../pages/NestesPage1";
+import NestedPage2 from "../pages/NestedPage2";
+import NestedPage3 from "../pages/NestedPage3";
 const Router = () => {
   return (
     <Container maxWidth="xl">
@@ -24,6 +27,11 @@ const Router = () => {
         <Route path={ROUTES.LOGOUT} element={<HomePage />} />
         <Route path={ROUTES.ADDCARD} element={<AddCardPage />} />
         <Route path={ROUTES.MYCARDS} element={<MyCardsPage />} />
+        <Route path={"/sandbox"} element={<SandBoxPage />}>
+          <Route path="nestedpage1" element={<NestedPage1 />} />
+          <Route path="nestedpage2" element={<NestedPage2 />} />
+          <Route path="nestedpage3" element={<NestedPage3 />} />
+        </Route>
       </Routes>
     </Container>
   );

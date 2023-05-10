@@ -6,6 +6,7 @@ import {
   Switch,
   CssBaseline,
 } from "@mui/material";
+
 import ResponsiveAppBar from "../src/components/Navbar/NavBar";
 import { useEffect, useState } from "react";
 import CardComponent from "../src/components/CardComponents";
@@ -15,6 +16,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useSelector, useDispatch } from "react-redux";
 import useLoggedIn from "./hooks/useLoggedIn";
+import SimpleBottomNavigation from "../src/components/footer";
 const light = {
   palette: {
     mode: "light",
@@ -58,7 +60,9 @@ function App() {
         <main>
           <Router />
         </main>
-        <footer></footer>
+        <footer>
+          <SimpleBottomNavigation />
+        </footer>
       </Container>
     </ThemeProvider>
   );
