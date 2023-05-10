@@ -14,6 +14,9 @@ import SandBoxPage from "../pages/SandBoxPage";
 import NestedPage1 from "../pages/NestesPage1";
 import NestedPage2 from "../pages/NestedPage2";
 import NestedPage3 from "../pages/NestedPage3";
+import ProfilePage from "../pages/ProfilePage";
+import CrmTable from "../pages/CrmPage";
+import UserPage from "../pages/UserPage";
 const Router = () => {
   return (
     <Container maxWidth="xl">
@@ -22,11 +25,14 @@ const Router = () => {
         <Route path={ROUTES.SIGNUP} element={<SignUpPage />} />
         <Route path="/card/:id" element={<CardPage />} />
         <Route path="/edit/:id" element={<EditPage />} />
-        <Route path="/favorite" element={<FavoritePage />} />
+        <Route path="/user/:id" element={<UserPage />} />
+        <Route path={ROUTES.FAVCARDS} element={<FavoritePage />} />
         <Route path={ROUTES.LOGIN} element={<LogInPage />} />
         <Route path={ROUTES.LOGOUT} element={<HomePage />} />
         <Route path={ROUTES.ADDCARD} element={<AddCardPage />} />
         <Route path={ROUTES.MYCARDS} element={<MyCardsPage />} />
+        <Route path={ROUTES.PROFILE} element={<ProfilePage />} />
+        <Route path={ROUTES.CRM} element={<CrmTable />} />
         <Route path={"/sandbox"} element={<SandBoxPage />}>
           <Route path="nestedpage1" element={<NestedPage1 />} />
           <Route path="nestedpage2" element={<NestedPage2 />} />
