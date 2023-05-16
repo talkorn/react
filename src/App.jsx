@@ -1,10 +1,12 @@
 import "./App.css";
 import {
+  CircularProgress,
   Container,
   ThemeProvider,
   createTheme,
   Switch,
   CssBaseline,
+  Box,
 } from "@mui/material";
 
 import ResponsiveAppBar from "../src/components/Navbar/NavBar";
@@ -20,14 +22,20 @@ import SimpleBottomNavigation from "../src/components/footer";
 const light = {
   palette: {
     mode: "light",
+    background: { default: "lightBlue", paper: "#fff" },
   },
 };
 
 const dark = {
   palette: {
     mode: "dark",
+    background: {
+      default: "#121212",
+      paper: "#1e1e1e",
+    },
   },
 };
+
 function App() {
   const [isLoading, setIsLoading] = useState(true);
   const loggedIn = useLoggedIn();
@@ -42,8 +50,8 @@ function App() {
     <ThemeProvider theme={isDarkMode ? createTheme(dark) : createTheme(light)}>
       <CssBaseline />
       <ToastContainer
-        position="top-right"
-        autoClose={5000}
+        position="top-center"
+        autoClose={3000}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
@@ -53,13 +61,11 @@ function App() {
         pauseOnHover
         theme="colored"
       />
-      <Container sx={{ bgcolor: "background.default" }}>
+      <Container>
         <header>
           <ResponsiveAppBar />
         </header>
-        <main>
-          <Router />
-        </main>
+        <main>{isLoading ? <CircularProgress /> : <Router />}</main>
         <footer>
           <SimpleBottomNavigation />
         </footer>

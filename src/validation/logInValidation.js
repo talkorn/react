@@ -7,7 +7,7 @@ const logInSchema = Joi.object({
     .required(),
   password: Joi.string()
     .pattern(new RegExp("^(?=.*[A-Z])(?=.*[a-z]).{0,}$"))
-    .min(2)
+    .min(6)
     .max(10)
     .required(),
 });

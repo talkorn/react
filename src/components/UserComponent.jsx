@@ -29,9 +29,16 @@ const UserComponent = (userArr) => {
         inputStates[descriptions] &&
         inputsErrorsStates[descriptions] && (
           <Alert severity="warning">
-            {inputsErrorsStates[descriptions].map((item) => (
-              <div key={descriptions + "-errors" + item}>{item}</div>
-            ))}
+            {descriptions === "password" ? (
+              <div>
+                password should contain at least one uppercase and one lowercase
+                letter. length should be between 6 and 10.
+              </div>
+            ) : (
+              inputsErrorsStates[descriptions].map((item) => (
+                <div key={descriptions + "-errors" + item}>{item}</div>
+              ))
+            )}
           </Alert>
         )}
     </Fragment>

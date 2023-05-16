@@ -20,6 +20,8 @@ import useLoggedIn from "../hooks/useLoggedIn";
 import { Alert } from "@mui/material";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Stack from "@mui/material/Stack";
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
 const LogIn = () => {
   const loggedIn = useLoggedIn();
   const [inputsErrorsState, setInputsErrorsState] = useState(null);
@@ -29,9 +31,11 @@ const LogIn = () => {
   useEffect(() => {
     const joiResponse = logInValidationSchema(inputState);
     setInputsErrorsState(joiResponse);
-    console.log("inputsErrorsState", inputsErrorsState);
-    if (!inputsErrorsState && inputState.email && inputState.password) {
+    console.log("joiResponse", joiResponse);
+    if (!joiResponse && inputState.email && inputState.password) {
       setButtonValid(true);
+    } else {
+      setButtonValid(false);
     }
   }, [inputState]);
   const handleSubmit = async (event) => {
@@ -56,7 +60,12 @@ const LogIn = () => {
     newInputState[ev.target.id] = ev.target.value;
     setInputState(newInputState);
   };
-
+  const cancleButoon = () => {
+    navigate(ROUTES.HOME);
+  };
+  const resetButton = () => {
+    setInputState({ email: "", password: "" });
+  };
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -108,17 +117,33 @@ const LogIn = () => {
           />
           {inputsErrorsState &&
             inputState.password &&
-            inputsErrorsState.password && (
+            inputsErrorsState.password && ( // Check if the error array has items
               <Alert severity="warning">
-                {inputsErrorsState.password.map((item) => (
-                  <div key={"password-errors" + item}>{item}</div>
-                ))}
+                {" "}
+                <div>
+                  password should contain at least one uppercase and one
+                  lowercase letter. length should be between 6 and 10.
+                </div>
               </Alert>
             )}
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
+          <Stack xs={12} spacing={3} direction="row">
+            <Button
+              onClick={cancleButoon}
+              fullWidth
+              variant="outlined"
+              color="error"
+            >
+              Cancle
+            </Button>
+            <Button
+              onClick={resetButton}
+              fullWidth
+              variant="outlined"
+              color="success"
+            >
+              <RestartAltIcon />
+            </Button>
+          </Stack>
           <Button
             disabled={!buttonValid}
             type="submit"
@@ -128,18 +153,6 @@ const LogIn = () => {
           >
             Sign In
           </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link href="#" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
-          </Grid>
         </Box>
       </Box>
     </Container>

@@ -11,61 +11,36 @@ import Avatar from "@mui/material/Avatar";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import ROUTES from "../../routes/ROUTES";
-import store from "../../store/theStore";
 import NavLinkComponent from "./NavLinkComponent";
-import { darkModeActions } from "../../store/darkMode";
 import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-import Checkbox from "@mui/material/Checkbox";
 import { useSelector, useDispatch } from "react-redux";
-import WbSunnyIcon from "@mui/icons-material/WbSunny";
-import ModeNightIcon from "@mui/icons-material/ModeNight";
 import SearchFromNav from "../searchNavComponent";
 import { authActions } from "../../store/auth";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import ShortTYpographyComponnent from "../ShortTYpographyComponnent";
+import CheckboxComponnent from "../CheckboxComponnent";
 const notAuthPages = [
-  {
-    label: "SignUp",
-    url: ROUTES.SIGNUP,
-  },
-  {
-    label: "Login",
-    url: ROUTES.LOGIN,
-  },
+  { label: "SignUp", url: ROUTES.SIGNUP },
+  { label: "Login", url: ROUTES.LOGIN },
 ];
-//logged in users
 const authedPages = [
-  {
-    label: "Profile",
-    url: ROUTES.PROFILE,
-  },
-  {
-    label: "Logout",
-    url: ROUTES.LOGOUT,
-  },
+  { label: "Profile", url: ROUTES.PROFILE },
+  { label: "Logout", url: ROUTES.LOGOUT },
 ];
-
 function ResponsiveAppBar() {
   const payload = useSelector((store) => store.authSlice.payload);
   const isLoggedIn = useSelector(
     (bigPieBigState) => bigPieBigState.authSlice.isLoggedIn
   );
   const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const isDarkMode = useSelector((store) => store.darkModeSlice.isDarkMode);
   const dispatch = useDispatch();
-  const changeMode = () => {
-    dispatch(darkModeActions.changeMode());
-  };
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
-
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
-
   const logoutClick = () => {
     localStorage.clear();
     dispatch(authActions.logout());
@@ -76,36 +51,7 @@ function ResponsiveAppBar() {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
-
-          <Typography
-            variant="h6"
-            noWrap
-            component={Link}
-            to={ROUTES.HOME}
-            sx={{
-              mr: 1,
-              display: { xs: "none", md: "flex" },
-              fontFamily: "monospace",
-              fontWeight: 300,
-              letterSpacing: ".1rem",
-              color: "inherit",
-              textDecoration: "none",
-              "&:hover": {
-                color: "blue",
-              },
-            }}
-          >
-            Tal's Cards
-          </Typography>
-
-          <Checkbox
-            edge="start"
-            icon={<WbSunnyIcon color="secondary" />}
-            checkedIcon={<ModeNightIcon color="warning" />}
-            checked={isDarkMode}
-            onClick={changeMode}
-          />
-
+          <CheckboxComponnent /> <ShortTYpographyComponnent />
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
@@ -115,7 +61,6 @@ function ResponsiveAppBar() {
               onClick={handleOpenNavMenu}
               color="inherit"
             ></IconButton>
-
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -126,7 +71,6 @@ function ResponsiveAppBar() {
             >
               <MenuIcon />
             </IconButton>
-
             <Menu
               id="menu-appbar"
               anchorEl={anchorElNav}
@@ -178,7 +122,6 @@ function ResponsiveAppBar() {
                   label="CRM"
                 />
               )}
-
               {isLoggedIn
                 ? authedPages.map((settings) =>
                     settings.url === ROUTES.LOGOUT ? (
@@ -208,25 +151,6 @@ function ResponsiveAppBar() {
                   ))}
             </Menu>
           </Box>
-          <Typography
-            variant="h5"
-            noWrap
-            component={Link}
-            to={ROUTES.HOME}
-            sx={{
-              mr: 2,
-              display: { xs: "flex", md: "none" },
-              flexGrow: 1,
-              fontFamily: "monospace",
-              fontWeight: 700,
-              /*  letterSpacing: ".1rem", */
-              color: "inherit",
-              textDecoration: "none",
-            }}
-          >
-            Tal's<br></br> Cards
-          </Typography>
-
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             <NavLinkComponent url={ROUTES.ABOUT} label="About" />
             {isLoggedIn && (

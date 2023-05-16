@@ -1,5 +1,6 @@
-import { Fragment } from "react";
+/* import { Fragment } from "react";
 import { Alert } from "@mui/material";
+
 const ErrorUserComponent = (erorrArr) => {
   const descriptions = erorrArr.description;
   const inputStates = erorrArr.inputStates;
@@ -19,3 +20,4 @@ const ErrorUserComponent = (erorrArr) => {
   );
 };
 export default ErrorUserComponent;
+ */

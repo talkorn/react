@@ -130,7 +130,7 @@ const CardPage = () => {
       await axios.post("/cards/", inputState);
       toast.success("Great! a new Business Card has been created");
 
-      navigate(ROUTES.HOME);
+      navigate(ROUTES.MYCARDS);
     } catch (err) {
       console.log("error from axios", err.response.data);
       toast.error(err.response.data);

@@ -10,6 +10,7 @@ import InfoIcon from "@mui/icons-material/Info";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import ROUTES from "../routes/ROUTES";
+
 export default function SimpleBottomNavigation() {
   const [value, setValue] = React.useState(0);
   const isLoggedIn = useSelector(
@@ -30,14 +31,14 @@ export default function SimpleBottomNavigation() {
           component={Link}
           to={ROUTES.ABOUT}
           label="About"
-          icon={<InfoIcon />}
+          icon={<InfoIcon color="Primary" />}
         />
         {isLoggedIn && (
           <BottomNavigationAction
             component={Link}
             to={ROUTES.FAVCARDS}
             label="Favorites"
-            icon={<FavoriteIcon />}
+            icon={<FavoriteIcon color="secondary" />}
           />
         )}
         {payload && payload.biz && (
