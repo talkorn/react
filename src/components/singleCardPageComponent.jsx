@@ -41,8 +41,15 @@ const SingleCardPageComponent = ({
   canDelete,
   cardIdUser,
 }) => {
-  if (idUser && likes) {
-  }
+  const [showCallWindow, setShowCallWindow] = React.useState(false);
+
+  const handleCallClick = () => {
+    setShowCallWindow(true);
+  };
+
+  const handleCloseCallWindow = () => {
+    setShowCallWindow(false);
+  };
   return (
     <Card sx={{ margin: "auto", maxWidth: 550 }}>
       <CardMedia
@@ -117,9 +124,30 @@ const SingleCardPageComponent = ({
           ) : (
             ""
           )}
-          <Button size="small">
+          <Button size="small" onClick={handleCallClick}>
             <CallIcon />
-          </Button>
+          </Button>{" "}
+          {showCallWindow && (
+            <Box
+              sx={{
+                position: "fixed",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                backgroundColor: "#ebe9b7",
+                padding: "10px",
+                borderRadius: "5px",
+              }}
+            >
+              <Typography variant="h6" gutterBottom>
+                Call Us {phone}
+              </Typography>
+
+              <Button variant="contained" onClick={handleCloseCallWindow}>
+                Close
+              </Button>
+            </Box>
+          )}
         </Box>
       </CardActions>
     </Card>

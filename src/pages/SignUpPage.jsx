@@ -19,6 +19,7 @@ import { useNavigate } from "react-router-dom";
 import ROUTES from "../routes/ROUTES";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import CardMedia from "@mui/material/CardMedia";
 const SignUpPage = () => {
   const resaetInputState = {
     firstName: "",
@@ -45,9 +46,9 @@ const SignUpPage = () => {
   useEffect(() => {
     const joiResponse = validateSignUpSchema(inputState);
     setInputsErrorsState(joiResponse);
-    console.log("inputsErrorsState", inputsErrorsState);
+    console.log("joiResponse", joiResponse);
     if (
-      !inputsErrorsState &&
+      !joiResponse &&
       inputState.firstName &&
       inputState.lastName &&
       inputState.phone &&
@@ -60,6 +61,8 @@ const SignUpPage = () => {
       inputState.zipCode */
     ) {
       setButtonValid(true);
+    } else {
+      setButtonValid(false);
     }
   }, [inputState]);
   const cancleButoon = () => {
@@ -113,6 +116,12 @@ const SignUpPage = () => {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
+        <CardMedia
+          component="img"
+          sx={{ height: 140 }}
+          image={inputState.imageUrl}
+          title={inputState.title}
+        />
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
             {[

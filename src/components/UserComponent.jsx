@@ -44,6 +44,7 @@ const UserComponent = (userArr) => {
     </Fragment>
   );
 };
+
 UserComponent.propTypes = {
   description: PropTypes.string.isRequired,
   inputStates: PropTypes.object.isRequired,

@@ -8,11 +8,8 @@ import Container from "@mui/material/Container";
 import EditIcon from "@mui/icons-material/Edit";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import SingleCardPageComponent from "../components/singleCardPageComponent";
 import ROUTES from "../routes/ROUTES";
-import validateIdCardParamsSchema from "../validation/idValidation";
 import { CircularProgress } from "@mui/material";
-import atom from "../logo.svg";
 import CssBaseline from "@mui/material/CssBaseline";
 import UserComponent from "../components/UserComponent";
 import Stack from "@mui/material/Stack";
@@ -21,7 +18,7 @@ import validateProfileSchema from "../validation/ProfilePageValidation";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 
 const ProfilePage = () => {
-  const { id } = useParams();
+  /*  const { id } = useParams(); */
   const [inputsErrorsState, setInputsErrorsState] = useState("");
   const [buttonValid, setButtonValid] = useState(false);
   const [inputState, setInputState] = useState("");
@@ -144,18 +141,12 @@ const ProfilePage = () => {
                 />
               </Grid>
             ))}
-            <Stack xs={12} spacing={3} direction="row">
-              <Button
-                onClick={cancleButoon}
-                fullWidth
-                variant="outlined"
-                color="error"
-              >
+            <Stack xs={12} sx={{ m: 2 }} spacing={2} direction="row">
+              <Button onClick={cancleButoon} variant="outlined" color="error">
                 Cancle
               </Button>
               <Button
                 onClick={() => resetButton()}
-                fullWidth
                 variant="outlined"
                 color="success"
               >

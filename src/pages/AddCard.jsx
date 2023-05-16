@@ -8,14 +8,14 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import EditIcon from "@mui/icons-material/Edit";
-import { Link, useNavigate, useParams } from "react-router-dom";
+
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import SingleCardPageComponent from "../components/singleCardPageComponent";
+
 import ROUTES from "../routes/ROUTES";
-import validateIdCardParamsSchema from "../validation/idValidation";
+
 import { CircularProgress } from "@mui/material";
-import atom from "../logo.svg";
+
 import CssBaseline from "@mui/material/CssBaseline";
 import UserComponent from "../components/UserComponent";
 import Stack from "@mui/material/Stack";
@@ -23,11 +23,11 @@ import CardMedia from "@mui/material/CardMedia";
 import validateEditSchema from "../validation/editValidation";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const CardPage = () => {
-  const { id } = useParams();
+  /*  const { id } = useParams(); */
   const [inputsErrorsState, setInputsErrorsState] = useState(null);
   const [buttonValid, setButtonValid] = useState(false);
   const initialCard = {
@@ -204,7 +204,7 @@ const CardPage = () => {
                 />
               </Grid>
             ))}
-            <Stack xs={12} spacing={3} direction="row">
+            <Stack xs={12} sx={{ m: 2 }} spacing={2} direction="row">
               <Button
                 onClick={cancleButoon}
                 fullWidth

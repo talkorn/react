@@ -177,7 +177,7 @@ const CardPage = () => {
                 />
               </Grid>
             ))}
-            <Stack xs={12} spacing={3} direction="row">
+            <Stack xs={12} sx={{ m: 2 }} spacing={2} direction="row">
               <Button
                 onClick={cancleButoon}
                 fullWidth
