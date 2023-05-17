@@ -4,7 +4,7 @@ import ROUTES from "./ROUTES";
 import HomePage from "../pages/HomePage";
 import SignUpPage from "../pages/SignUpPage";
 import LogInPage from "../pages/LogIn";
-import CardPage from "../pages/card";
+import CardPage from "../pages/Card";
 import EditPage from "../pages/EditPage";
 import FavoritePage from "../pages/Favorite";
 import AddCardPage from "../pages/AddCard";

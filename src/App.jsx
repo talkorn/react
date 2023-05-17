@@ -4,21 +4,17 @@ import {
   Container,
   ThemeProvider,
   createTheme,
-  Switch,
   CssBaseline,
-  Box,
 } from "@mui/material";
 
 import ResponsiveAppBar from "../src/components/Navbar/NavBar";
 import { useEffect, useState } from "react";
-import CardComponent from "../src/components/CardComponents";
-import HomePage from "../src/pages/HomePage";
 import Router from "../src/routes/Router";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import useLoggedIn from "./hooks/useLoggedIn";
-import SimpleBottomNavigation from "../src/components/footer";
+import SimpleBottomNavigation from "./components/Footer1";
 const light = {
   palette: {
     mode: "light",

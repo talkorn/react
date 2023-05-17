@@ -1,17 +1,12 @@
 import * as React from "react";
 import { styled, alpha } from "@mui/material/styles";
-import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
-import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import ROUTES from "../routes/ROUTES";
 import { useLocation } from "react-router-dom";
+
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
@@ -62,8 +57,6 @@ const SearchFromNav = () => {
     const value = ev.target.value;
     setSearchState(value);
     searchSubmit(value);
-    /*  searchSubmit();
-    setSearchState(ev.target.value); */
   };
   const searchSubmit = (value) => {
     const pathname = location.pathname;
@@ -71,7 +64,7 @@ const SearchFromNav = () => {
     navigate(`${pathname}?filter=${value}`);
   };
   return (
-    <Box sx={{ float: "right", width: "16.666%", m: 1 }}>
+    <Box sx={{ float: "right", width: { xs: "100%", sm: "16.666%" }, m: 1 }}>
       <Search>
         <SearchIconWrapper>
           <SearchIcon />

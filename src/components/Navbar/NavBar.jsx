@@ -14,7 +14,7 @@ import ROUTES from "../../routes/ROUTES";
 import NavLinkComponent from "./NavLinkComponent";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import SearchFromNav from "../searchNavComponent";
+import SearchFromNav from "../SearchNavComponent1";
 import { authActions } from "../../store/auth";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -93,12 +93,14 @@ function ResponsiveAppBar() {
                 key={ROUTES.ABOUT}
                 url={ROUTES.ABOUT}
                 label="About"
+                onClick={handleCloseNavMenu}
               />
               {isLoggedIn && (
                 <NavLinkComponent
                   key={ROUTES.FAVCARDS}
                   url={ROUTES.FAVCARDS}
                   label="Favorite"
+                  onClick={handleCloseNavMenu}
                 />
               )}
               {payload && (payload.isAdmin || payload.biz) && (
@@ -106,6 +108,7 @@ function ResponsiveAppBar() {
                   key={ROUTES.SANDBOX}
                   url={ROUTES.SANDBOX}
                   label="Sandbox"
+                  onClick={handleCloseNavMenu}
                 />
               )}
               {payload && payload.biz && (
@@ -113,6 +116,7 @@ function ResponsiveAppBar() {
                   key={ROUTES.MYCARDS}
                   url={ROUTES.MYCARDS}
                   label="MY Cards"
+                  onClick={handleCloseNavMenu}
                 />
               )}
               {payload && payload.isAdmin && (
@@ -120,6 +124,7 @@ function ResponsiveAppBar() {
                   key={ROUTES.CRM}
                   url={ROUTES.CRM}
                   label="CRM"
+                  onClick={handleCloseNavMenu}
                 />
               )}
               {isLoggedIn
@@ -136,7 +141,7 @@ function ResponsiveAppBar() {
                       </MenuItem>
                     ) : (
                       <MenuItem key={settings.url}>
-                        <Link to={settings.url}>
+                        <Link to={settings.url} onClick={handleCloseNavMenu}>
                           <Typography
                             sx={{ textDecoration: "none", color: "pink" }}
                           >

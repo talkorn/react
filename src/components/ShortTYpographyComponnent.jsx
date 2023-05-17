@@ -8,7 +8,7 @@ const ShortTYpographyComponnent = () => {
     <Fragment>
       <Typography
         variant="h6"
-        noWrap
+        /*  noWrap */
         component={Link}
         to={ROUTES.HOME}
         sx={{
@@ -26,13 +26,6 @@ const ShortTYpographyComponnent = () => {
       >
         Tal's Cards
       </Typography>
-      {/*  <Checkbox
-        edge="start"
-        icon={<WbSunnyIcon color="secondary" />}
-        checkedIcon={<ModeNightIcon color="warning" />}
-        checked={isDarkMode}
-        onClick={changeMode}
-      /> */}
     </Fragment>
   );
 };

@@ -5,7 +5,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import SingleCardPageComponent from "../components/singleCardPageComponent";
+import SingleCardPageComponent from "../components/SingleCardPageComponent1";
 import ROUTES from "../routes/ROUTES";
 import validateIdCardParamsSchema from "../validation/idValidation";
 import { CircularProgress } from "@mui/material";

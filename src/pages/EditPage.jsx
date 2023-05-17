@@ -8,7 +8,7 @@ import Container from "@mui/material/Container";
 import EditIcon from "@mui/icons-material/Edit";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import SingleCardPageComponent from "../components/singleCardPageComponent";
+import SingleCardPageComponent from "../components/SingleCardPageComponent1";
 import ROUTES from "../routes/ROUTES";
 import validateIdCardParamsSchema from "../validation/idValidation";
 import { CircularProgress } from "@mui/material";
