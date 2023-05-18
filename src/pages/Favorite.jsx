@@ -22,7 +22,6 @@ const FavoritePage = () => {
     axios
       .get("http://localhost:8181/api/cards/cards")
       .then(({ data }) => {
-        console.log("data", data);
         filterFunc(data);
       })
 
@@ -32,7 +31,6 @@ const FavoritePage = () => {
   }, []);
   const filterFunc = (data) => {
     let dataToSearch = originalCardsArr || data;
-    console.log(dataToSearch);
     if (!dataToSearch) {
       return;
     }
@@ -60,7 +58,6 @@ const FavoritePage = () => {
     navigate(`/card/${id}`);
   };
   const moveToEditPage = (id) => {
-    console.log("id", id);
     navigate(`/edit/${id}`);
   };
 

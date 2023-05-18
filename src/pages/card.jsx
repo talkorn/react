@@ -1,4 +1,4 @@
-import { useState, useEffect, Fragment } from "react";
+import { useState, useEffect } from "react";
 import CancelIcon from "@mui/icons-material/Cancel";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -9,16 +9,14 @@ import SingleCardPageComponent from "../components/SingleCardPageComponent1";
 import ROUTES from "../routes/ROUTES";
 import validateIdCardParamsSchema from "../validation/idValidation";
 import { CircularProgress } from "@mui/material";
-import atom from "../logo.svg";
 import { useSelector } from "react-redux";
 import useLoggedIn from "../hooks/useLoggedIn";
 import CssBaseline from "@mui/material/CssBaseline";
-import { useDispatch } from "react-redux";
-import CardComponent from "../components/CardComponents";
+import { toast } from "react-toastify";
+
 const CardPage = () => {
   const payload = useSelector((store) => store.authSlice.payload);
   const LoggedIn = useLoggedIn();
-  const dispatch = useDispatch();
   const { id } = useParams();
   const navigate = useNavigate();
   const [inputState, setInputState] = useState(null);
@@ -51,12 +49,6 @@ const CardPage = () => {
           bizNumber: data?.bizNumber || "",
         };
         delete newInputState.image;
-        /*  delete newInputState.likes; */
-        /*   delete newInputState._id; */
-        /*   delete newInputState.user_id; */
-        /*  delete newInputState.bizNumber;*/
-        /*   delete newInputState.createdAt; */
-
         setInputState(newInputState);
       } catch (err) {
         console.log("error from axios", err);
@@ -66,13 +58,10 @@ const CardPage = () => {
   let idUser;
   if (payload) {
     idUser = payload._id;
-    // rest of the code here
   }
-
   const moveToEditPage = (id) => {
     navigate(`/edit/${id}`);
   };
-
   const addToFavorite = async (id) => {
     await axios.patch(`/cards/card-like/${id}`);
 
@@ -89,12 +78,6 @@ const CardPage = () => {
         bizNumber: data?.bizNumber || "",
       };
       delete newInputState.image;
-      /* delete newInputState.likes; */
-      /*   delete newInputState._id; */
-      /*   delete newInputState.user_id; */
-      /*  delete newInputState.bizNumber;*/
-      /*   delete newInputState.createdAt; */
-
       setInputState(newInputState);
     } catch (err) {
       console.log("Error fetching updated card list", err);
@@ -104,7 +87,9 @@ const CardPage = () => {
     try {
       await axios.delete("cards/" + id);
       navigate(ROUTES.HOME);
+      toast.success("you have deleted the card");
     } catch (err) {
+      toast.error("The card didn't delete");
       console.log("error from axios", err.response.data);
     }
   };
@@ -136,7 +121,7 @@ const CardPage = () => {
           onFavorites={addToFavorite}
           likes={inputState.likes}
           idUser={idUser}
-          id={inputState._id}
+          ids={inputState._id}
           title={inputState.title}
           subTitle={inputState.subTitle}
           description={inputState.description}

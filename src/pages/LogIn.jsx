@@ -31,7 +31,6 @@ const LogIn = () => {
   useEffect(() => {
     const joiResponse = logInValidationSchema(inputState);
     setInputsErrorsState(joiResponse);
-    console.log("joiResponse", joiResponse);
     if (!joiResponse && inputState.email && inputState.password) {
       setButtonValid(true);
     } else {
@@ -45,7 +44,6 @@ const LogIn = () => {
         return;
       }
       const { data } = await axios.post("/users/login", inputState);
-      console.log("data", data);
       localStorage.setItem("token", data.token);
       toast.success("SignIn Completed");
       loggedIn();
@@ -117,9 +115,8 @@ const LogIn = () => {
           />
           {inputsErrorsState &&
             inputState.password &&
-            inputsErrorsState.password && ( // Check if the error array has items
+            inputsErrorsState.password && (
               <Alert severity="warning">
-                {" "}
                 <div>
                   password should contain at least one uppercase and one
                   lowercase letter. length should be between 6 and 10.

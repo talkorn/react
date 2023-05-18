@@ -13,7 +13,6 @@ const ShortTYpographyComponnent = () => {
         to={ROUTES.HOME}
         sx={{
           mr: 1,
-          /*  display: { xs: smallmedia, md: largemedia }, */
           fontFamily: "monospace",
           fontWeight: 300,
           letterSpacing: ".1rem",

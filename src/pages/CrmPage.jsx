@@ -10,9 +10,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Checkbox from "@mui/material/Checkbox";
-import { date } from "joi";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -25,7 +24,6 @@ const CrmTable = () => {
     (async () => {
       try {
         const { data } = await axios.get("users/getAllUsers");
-        console.log("data", data.users);
         setIntialData(data.users);
       } catch (err) {
         console.log("error from axios", err);
@@ -33,22 +31,13 @@ const CrmTable = () => {
     })();
   }, []);
   const openUserCard = (id) => {
-    console.log("id", id);
     navigate(`/user/${id}`);
   };
-  /*  const handleInputChange = (ev) => {
-    let newInputState = JSON.parse(JSON.stringify(initialData));
-    console.log(ev);
-    newInputState[ev.target.checked] = ev.target.value;
-    console.log(newInputState);
-    setIntialData(newInputState);
-  }; */
+
   const deleteUser = async (id) => {
     let newInitialData = JSON.parse(JSON.stringify(initialData));
     const updatedUser = newInitialData.find((user) => user._id === id);
-    console.log("updatedUser", updatedUser);
     if (updatedUser.isAdmin === true) {
-      console.log("updatedUser.isAdmin", updatedUser.isAdmin);
       toast.error("sorry,you cant change this user details");
       return;
     }
@@ -56,7 +45,6 @@ const CrmTable = () => {
       const newData = initialData.filter((user) => {
         return user._id !== id;
       });
-      console.log("newData", newData);
       await axios.delete("users/deleteUser/" + id);
       setIntialData(newData);
     } catch (err) {
@@ -68,7 +56,6 @@ const CrmTable = () => {
     const updatedUser = newInitialData.find((user) => user._id === id);
 
     if (updatedUser.isAdmin === true) {
-      console.log("updatedUser.isAdmin", updatedUser.isAdmin);
       toast.error("sorry,you cant change this user details");
       return;
     }
@@ -82,9 +69,7 @@ const CrmTable = () => {
         }
         return user;
       });
-      console.log(newData);
       const response = await axios.put(`/users/userInfo/${id}`, updatedUser);
-      console.log(response.data);
       setIntialData(newData);
     } catch (err) {
       console.log("error from axios", err.response);

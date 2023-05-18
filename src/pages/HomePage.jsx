@@ -3,12 +3,11 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import CardComponent from "../components/CardComponents";
 import { useNavigate } from "react-router-dom";
-import ROUTES from "../routes/ROUTES";
 import { useSelector } from "react-redux";
-import useLoggedIn from "../hooks/useLoggedIn";
 import CssBaseline from "@mui/material/CssBaseline";
 import useQueryParams from "../hooks/useQueryParam.js";
 import filterFunction from "../utilis/filterFunc.js";
+import { toast } from "react-toastify";
 const HomePage = () => {
   const [originalCardsArr, setOriginalCardsArr] = useState(null);
   const [cardsArr, setCardsArr] = useState(null);
@@ -24,7 +23,6 @@ const HomePage = () => {
     axios
       .get("http://localhost:8181/api/cards/cards")
       .then(({ data }) => {
-        console.log("data", data);
         filterFunc(data);
       })
       .catch((err) => {
@@ -33,21 +31,10 @@ const HomePage = () => {
   }, []);
   const filterFunc = (data) => {
     let dataToSearch = originalCardsArr || data;
-    console.log(dataToSearch);
     if (!dataToSearch) {
       return;
     }
     let searchResult = filterFunction(dataToSearch, searchParams);
-    /*  let filter = "";
-    console.log("filter", filter);
-    if (searchParams.filter) {
-      filter = searchParams.filter;
-    }
-    let searchResult = dataToSearch.filter(
-      (card) =>
-        card.title.toLowerCase().startsWith(filter.toLowerCase()) ||
-        card.bizNumber.toLowerCase().startsWith(filter.toLowerCase())
-    ); */
     setOriginalCardsArr(dataToSearch);
     setCardsArr(searchResult);
   };
@@ -64,11 +51,9 @@ const HomePage = () => {
   }
 
   const moveToCardPage = (id) => {
-    console.log("id", id);
     navigate(`/card/${id}`);
   };
   const moveToEditPage = (id) => {
-    console.log("id", id);
     navigate(`/edit/${id}`);
   };
 
@@ -77,7 +62,6 @@ const HomePage = () => {
     try {
       const { data } = await axios.get("http://localhost:8181/api/cards/cards");
       setCardsArr(data);
-      //toast?
     } catch (err) {
       console.log("Error fetching updated card list", err);
     }
@@ -85,11 +69,11 @@ const HomePage = () => {
 
   const deleteCardFromInitialCardsArr = async (id) => {
     try {
-      console.log("id", id);
       setCardsArr((cardsArr) => cardsArr.filter((item) => item._id != id));
-      console.log("cardsArr", cardsArr);
       await axios.delete("cards/" + id);
+      toast.success("you have deleted the card");
     } catch (err) {
+      toast.error("The card didn't delete");
       console.log("error when deleting", err.response.data);
     }
   };

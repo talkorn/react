@@ -1,4 +1,4 @@
-import { CssBaseline, Box, Grid } from "@mui/material";
+import { CssBaseline, Grid } from "@mui/material";
 import { Fragment } from "react";
 import { Link, Outlet } from "react-router-dom";
 

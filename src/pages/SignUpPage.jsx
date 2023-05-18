@@ -17,7 +17,7 @@ import axios from "axios";
 import UserComponent from "../components/UserComponent";
 import { useNavigate } from "react-router-dom";
 import ROUTES from "../routes/ROUTES";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CardMedia from "@mui/material/CardMedia";
 const SignUpPage = () => {
@@ -46,7 +46,6 @@ const SignUpPage = () => {
   useEffect(() => {
     const joiResponse = validateSignUpSchema(inputState);
     setInputsErrorsState(joiResponse);
-    console.log("joiResponse", joiResponse);
     if (
       !joiResponse &&
       inputState.firstName &&
@@ -71,8 +70,6 @@ const SignUpPage = () => {
   const resetButton = () => {
     setInputState(resaetInputState);
   };
-  console.log("inputState", inputState);
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {

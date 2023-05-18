@@ -49,59 +49,11 @@ const CardPage = () => {
   };
   const [inputState, setInputState] = useState(initialCard);
 
-  const [initialnputState, setInitialnputState] = useState("");
   const navigate = useNavigate();
-  /*  useEffect(() => {
-    (async () => {
-      try {
-        if (!id) {
-          return;
-        }
-        const errors = validateIdCardParamsSchema({ id });
-        if (errors) {
-          // there was errors = incorrect id
-          navigate("/");
-          return;
-        }
-        const { data } = await axios.get("/cards/card/" + id);
-        let newInputState = {
-          ...data,
-        };
-        setInitialnputState(newInputState);
 
-        if (data.image && data.image.url) {
-          newInputState.url = data.image.url;
-        } else {
-          newInputState.url = "";
-        }
-        if (data.image && data.image.alt) {
-          newInputState.alt = data.image.alt;
-        } else {
-          newInputState.alt = "";
-        }
-        if (data.bizNumber && data.image.alt) {
-          newInputState.alt = data.image.alt;
-        } else {
-          newInputState.alt = "";
-        }
-        delete newInputState.image;
-        delete newInputState.likes;
-        delete newInputState._id;
-        delete newInputState.__v;
-        delete newInputState.user_id;
-        delete newInputState.bizNumber;
-        delete newInputState.createdAt;
-        console.log("newInputState", newInputState);
-        setInputState(newInputState);
-      } catch (err) {
-        console.log("error from axios", err);
-      }
-    })();
-  }, [id]); */
   useEffect(() => {
     const joiResponse = validateEditSchema(inputState);
     setInputsErrorsState(joiResponse);
-    console.log("joiResponse", joiResponse);
     if (
       inputState &&
       !joiResponse &&
@@ -139,14 +91,13 @@ const CardPage = () => {
   const handleInputChange = (ev) => {
     let newInputState = JSON.parse(JSON.stringify(inputState));
     newInputState[ev.target.id] = ev.target.value;
-    console.log(newInputState);
     setInputState(newInputState);
   };
   const resetButton = () => {
     setInputState(initialCard);
     setButtonValid(false);
   };
-  /* const notify = () => toast("Great! a new Business Card has been created"); */
+
   const cancleButoon = () => {
     navigate(ROUTES.HOME);
   };

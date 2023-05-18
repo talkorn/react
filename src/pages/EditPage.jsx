@@ -1,4 +1,4 @@
-import { useState, useEffect, Fragment } from "react";
+import { useState, useEffect } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
@@ -6,20 +6,17 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import EditIcon from "@mui/icons-material/Edit";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import SingleCardPageComponent from "../components/SingleCardPageComponent1";
 import ROUTES from "../routes/ROUTES";
 import validateIdCardParamsSchema from "../validation/idValidation";
 import { CircularProgress } from "@mui/material";
-import atom from "../logo.svg";
 import CssBaseline from "@mui/material/CssBaseline";
 import UserComponent from "../components/UserComponent";
 import Stack from "@mui/material/Stack";
 import CardMedia from "@mui/material/CardMedia";
 import validateEditSchema from "../validation/editValidation";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
-
 const CardPage = () => {
   const { id } = useParams();
   const [inputsErrorsState, setInputsErrorsState] = useState("");
@@ -35,7 +32,6 @@ const CardPage = () => {
         }
         const errors = validateIdCardParamsSchema({ id });
         if (errors) {
-          // there was errors = incorrect id
           navigate("/");
           return;
         }
@@ -43,7 +39,6 @@ const CardPage = () => {
         let newInputState = {
           ...data,
         };
-
         if (data.image && data.image.url) {
           newInputState.url = data.image.url;
         } else {
@@ -69,7 +64,6 @@ const CardPage = () => {
         delete newInputState.user_id;
         delete newInputState.bizNumber;
         delete newInputState.createdAt;
-        console.log("newInputState", newInputState);
         setInputState(newInputState);
         setInitialnputState(newInputState);
       } catch (err) {
@@ -80,7 +74,6 @@ const CardPage = () => {
   useEffect(() => {
     const joiResponse = validateEditSchema(inputState);
     setInputsErrorsState(joiResponse);
-    console.log("joiResponse", joiResponse);
     if (
       inputState &&
       !joiResponse &&
@@ -114,7 +107,6 @@ const CardPage = () => {
   const handleInputChange = (ev) => {
     let newInputState = JSON.parse(JSON.stringify(inputState));
     newInputState[ev.target.id] = ev.target.value;
-    console.log(newInputState);
     setInputState(newInputState);
   };
   const resetButton = () => {
@@ -148,7 +140,7 @@ const CardPage = () => {
           sx={{ height: 140 }}
           image={inputState.url}
           title={inputState.title}
-        />{" "}
+        />
         <Box component="form" noValidate sx={{ mt: 3 }}>
           <Grid container spacing={2}>
             {[
@@ -195,7 +187,6 @@ const CardPage = () => {
                 <RestartAltIcon />
               </Button>
             </Stack>
-
             <Button
               onClick={handleSubmit}
               type="submit"

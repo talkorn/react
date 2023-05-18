@@ -12,10 +12,14 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import PropTypes from "prop-types";
-
+import { useState } from "react";
+import axios from "axios";
+import { useParams } from "react-router-dom";
+import Tooltip from "@mui/material/Tooltip";
+import { toast } from "react-toastify";
 const SingleCardPageComponent = ({
   onFavorites,
-  id,
+  ids,
   title,
   subTitle,
   description,
@@ -41,14 +45,37 @@ const SingleCardPageComponent = ({
   canDelete,
   cardIdUser,
 }) => {
+  const { id } = useParams();
   const [showCallWindow, setShowCallWindow] = React.useState(false);
-
+  const [cardNumber, setCardNumber] = useState(bizNumber);
   const handleCallClick = () => {
     setShowCallWindow(true);
   };
-
   const handleCloseCallWindow = () => {
     setShowCallWindow(false);
+  };
+  const handleInputChange = async () => {
+    try {
+      let users = await axios.get(`/cards/cards`);
+      users = users.data;
+      await axios.patch(`/cards/bizNumber/${id}`);
+      const { data } = await axios.get(`/cards/card/${id}`);
+      const newData = { ...data };
+
+      const existingData = users.find(
+        (item) => item.bizNumber === newData.bizNumber
+      );
+
+      if (existingData) {
+        toast.error("the card number already exist");
+        return;
+      } else {
+        setCardNumber(newData.bizNumber);
+        toast.success("You've changed the card number");
+      }
+    } catch (err) {
+      console.log("Error fetching updated card list", err);
+    }
   };
   return (
     <Card sx={{ margin: "auto", maxWidth: 550 }}>
@@ -58,7 +85,7 @@ const SingleCardPageComponent = ({
         image={img}
         title={title}
       />{" "}
-      <CardContent onClick={() => onClick(id)}>
+      <CardContent>
         <Typography gutterBottom variant="h5" component="div">
           {title}
         </Typography>
@@ -90,10 +117,40 @@ const SingleCardPageComponent = ({
         <Typography variant="body2" color="text.secondary">
           {"createdAte: "} {createdAt}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {"CardNumber: "}
-          {bizNumber}
-        </Typography>
+        <Typography variant="body2" color="text.secondary"></Typography>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          onClick={handleInputChange}
+        ></Typography>
+        {canDelete ? (
+          <Tooltip title="Here you can change the card number">
+            <Button
+              sx={{
+                color: "grey",
+                textTransform: "none",
+                fontWeight: "normal",
+              }}
+              size="small"
+              onClick={handleInputChange}
+            >
+              {"Card Number: "}
+              {cardNumber}
+            </Button>
+          </Tooltip>
+        ) : (
+          <Button
+            sx={{
+              color: "grey",
+              textTransform: "none",
+              fontWeight: "normal",
+            }}
+            size="small"
+          >
+            {"CardNumber: "}
+            {cardNumber}
+          </Button>
+        )}
       </CardContent>
       <CardActions>
         {canDelete || (canEdit && cardIdUser === idUser) ? (

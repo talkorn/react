@@ -1,22 +1,16 @@
 import { useState, useEffect } from "react";
 import Avatar from "@mui/material/Avatar";
-
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import PersonIcon from "@mui/icons-material/Person";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "axios";
-
-import ROUTES from "../routes/ROUTES";
-
 import { CircularProgress } from "@mui/material";
-import atom from "../logo.svg";
 import CssBaseline from "@mui/material/CssBaseline";
 import UserComponent from "../components/UserComponent";
 import CardMedia from "@mui/material/CardMedia";
-import validateProfileSchema from "../validation/ProfilePageValidation";
 
 const UserPage = () => {
   const { id } = useParams();
@@ -26,7 +20,6 @@ const UserPage = () => {
       try {
         let newInputState;
         const { data } = await axios.get("users/getAllUsers");
-        console.log("data", data.users);
         if (data) {
           let userInfo = data.users;
           userInfo = userInfo.find((item) => item._id === id);
@@ -34,8 +27,6 @@ const UserPage = () => {
             ...userInfo,
           };
         }
-
-        console.log("newInputState", newInputState);
         setInputState(newInputState);
       } catch (err) {
         console.log("error from axios", err);
@@ -77,7 +68,6 @@ const UserPage = () => {
               { description: "lastName", required: true },
               { description: "phone", required: true },
               { description: "email", required: true },
-              /*  { description: "web", required: true }, */
               { description: "imageUrl", required: false },
               { description: "imageAlt", required: false },
               { description: "state", required: false },

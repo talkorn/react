@@ -5,14 +5,13 @@ import { useNavigate } from "react-router-dom";
 import CardComponent from "../components/CardComponents";
 import ROUTES from "../routes/ROUTES";
 import { useEffect, useState } from "react";
-import Container from "@mui/material/Container";
 import { useSelector } from "react-redux";
 import useLoggedIn from "../hooks/useLoggedIn";
+import { toast } from "react-toastify";
 import axios from "axios";
 import CssBaseline from "@mui/material/CssBaseline";
 import useQueryParams from "../hooks/useQueryParam.js";
 import filterFunction from "../utilis/filterFunc.js";
-import Stack from "@mui/material/Stack";
 const MyCardsPage = () => {
   const searchParams = useQueryParams();
   const [originalCardsArr, setOriginalCardsArr] = useState(null);
@@ -27,16 +26,12 @@ const MyCardsPage = () => {
     axios
       .get("cards/my-cards")
       .then(({ data }) => {
-        console.log("data", data);
         filterFunc(data);
       })
-      .catch((err) => {
-        console.log("err from axios", err);
-      });
+      .catch((err) => {});
   }, []);
   const filterFunc = (data) => {
     let dataToSearch = originalCardsArr || data;
-    console.log(dataToSearch);
     if (!dataToSearch) {
       return;
     }
@@ -59,11 +54,9 @@ const MyCardsPage = () => {
   }
 
   const moveToCardPage = (id) => {
-    console.log("id", id);
     navigate(`/card/${id}`);
   };
   const moveToEditPage = (id) => {
-    console.log("id", id);
     navigate(`/edit/${id}`);
   };
 
@@ -79,11 +72,11 @@ const MyCardsPage = () => {
 
   const deleteCardFromInitialCardsArr = async (id) => {
     try {
-      console.log("id", id);
       setCardsArr((cardsArr) => cardsArr.filter((item) => item._id != id));
-      console.log("cardsArr", cardsArr);
       await axios.delete("cards/" + id);
+      toast.success("you have deleted the card");
     } catch (err) {
+      toast.error("The card didn't delete");
       console.log("error when deleting", err.response.data);
     }
   };
@@ -122,7 +115,6 @@ const MyCardsPage = () => {
         <Grid container spacing={2}>
           {cardsArr.map((item) => (
             <Grid item xs={12} sm={6} md={4} key={item._id + Date.now()}>
-              {" "}
               <CardComponent
                 likes={item.likes}
                 idUser={idUser}

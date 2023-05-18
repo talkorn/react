@@ -1,4 +1,4 @@
-import { useState, useEffect, Fragment } from "react";
+import { useState, useEffect } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
@@ -6,7 +6,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import EditIcon from "@mui/icons-material/Edit";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import ROUTES from "../routes/ROUTES";
 import { CircularProgress } from "@mui/material";
@@ -18,7 +18,6 @@ import validateProfileSchema from "../validation/ProfilePageValidation";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 
 const ProfilePage = () => {
-  /*  const { id } = useParams(); */
   const [inputsErrorsState, setInputsErrorsState] = useState("");
   const [buttonValid, setButtonValid] = useState(false);
   const [inputState, setInputState] = useState("");
@@ -34,7 +33,6 @@ const ProfilePage = () => {
         delete newInputState._id;
         delete newInputState.isAdmin;
         delete newInputState.isBiz;
-        console.log("newInputState", newInputState);
         setInputState(newInputState);
         setInitialnputState(newInputState);
       } catch (err) {
@@ -45,7 +43,6 @@ const ProfilePage = () => {
   useEffect(() => {
     const joiResponse = validateProfileSchema(inputState);
     setInputsErrorsState(joiResponse);
-    console.log("joiResponse", joiResponse);
     if (
       inputState &&
       !joiResponse &&
@@ -78,7 +75,6 @@ const ProfilePage = () => {
   const handleInputChange = (ev) => {
     let newInputState = JSON.parse(JSON.stringify(inputState));
     newInputState[ev.target.id] = ev.target.value;
-    console.log(newInputState);
     setInputState(newInputState);
   };
   const resetButton = () => {
@@ -121,7 +117,6 @@ const ProfilePage = () => {
               { description: "lastName", required: true },
               { description: "phone", required: true },
               { description: "email", required: true },
-              /*  { description: "web", required: true }, */
               { description: "imageUrl", required: false },
               { description: "imageAlt", required: false },
               { description: "state", required: false },

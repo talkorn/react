@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { Container } from "@mui/material";
 import ROUTES from "./ROUTES";
 import HomePage from "../pages/HomePage";
@@ -28,14 +28,12 @@ const Router = () => {
         <Route path={ROUTES.ABOUT} element={<AboutPage />} />
         <Route path={ROUTES.SIGNUP} element={<SignUpPage />} />
         <Route path="/card/:id" element={<CardPage />} />
-
         <Route
           path={ROUTES.FAVCARDS}
           element={<ProtectedRoute element={<FavoritePage />} />}
         />
         <Route path={ROUTES.LOGIN} element={<LogInPage />} />
         <Route path={ROUTES.LOGOUT} element={<HomePage />} />
-        {/* <Route /> */}
         <Route
           path={ROUTES.PROFILE}
           element={<ProtectedRoute element={<ProfilePage />} />}
